@@ -11,4 +11,9 @@ export class List {
         const todo = new Todo(title, description, dueDate, priority);
         this.todos.push(todo);
     }
+
+    findTodo(id) {
+        const found = this.todos.find(todo => todo.id = id);
+        return found;
+    }
 }
