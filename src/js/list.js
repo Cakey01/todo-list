@@ -13,18 +13,15 @@ export class List {
     }
 
     findTodo(id) {
-        const found = this.todos.find(todo => todo.id = id);
-        return found;
-    }
-
-    findIndex(id) {
-        const found = this.findTodo(id);
-        const index = this.todos.indexOf(found);
-        return index;
+        return this.todos.find(todo => todo.id === id);
     }
 
     removeTodo(id) {
-        const toRemove = this.findIndex(id);
-        this.todos.splice(toRemove, 1);
+        const index = this.todos.findIndex(todo => todo.id === id);
+        if (index !== -1) {
+            this.todos.splice(index, 1);
+        }
     }
+
+
 }
