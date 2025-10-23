@@ -16,4 +16,15 @@ export class List {
         const found = this.todos.find(todo => todo.id = id);
         return found;
     }
+
+    findIndex(id) {
+        const found = this.findTodo(id);
+        const index = this.todos.indexOf(found);
+        return index;
+    }
+
+    removeTodo(id) {
+        const toRemove = this.findIndex(id);
+        this.todos.splice(toRemove, 1);
+    }
 }
