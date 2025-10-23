@@ -46,7 +46,10 @@ export class List {
                 todo.priority = value;
             }
         } else if (property === 'completed') {
-            if (value === true) this.removeTodo(todo.id);
+            if (value === true) {
+                todo.completed = true;
+                this.removeTodo(todo.id);
+            }
         }
     }
 }
