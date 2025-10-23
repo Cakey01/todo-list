@@ -8,7 +8,7 @@ export class List {
     }
 
     addTodo(title, description, date, time, priority) {
-        const todo = new Todo(title, description, date, time,priority);
+        const todo = new Todo(title, description, date, time, priority);
         if (!todo.title || !todo.title.trim().length) {
             return;
         }
@@ -28,4 +28,25 @@ export class List {
         }
     }
 
+    updateTodo(id, property, value) {
+        const todo = this.findTodo(id);
+
+        if (!todo) return;
+        
+        // update title
+        if (property === 'title' && value.trim().length) {
+            todo.title = value.trim();
+        } else if (property === 'description') {
+            todo.description = value.trim();
+        } else if (property === 'date' || property === 'time') {
+            todo[property] = value;
+        } else if (property === 'priority') {
+            const accepted = ['low', 'medium', 'high', 'none']
+            if (accepted.includes(value)) {
+                todo.priority = value;
+            }
+        } else if (property === 'completed') {
+            if (value === true) this.removeTodo(todo.id);
+        }
+    }
 }
