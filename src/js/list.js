@@ -13,6 +13,7 @@ export class List {
             return;
         }
         todo.title = todo.title.trim();
+        todo.description = todo.description.trim();
         this.todos.push(todo);
     }
 
