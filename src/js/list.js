@@ -32,8 +32,7 @@ export class List {
         const todo = this.findTodo(id);
 
         if (!todo) return;
-        
-        // update title
+
         if (property === 'title' && value.trim().length) {
             todo.title = value.trim();
         } else if (property === 'description') {
@@ -48,7 +47,6 @@ export class List {
         } else if (property === 'completed') {
             if (value === true) {
                 todo.completed = true;
-                this.removeTodo(todo.id);
             }
         }
     }
