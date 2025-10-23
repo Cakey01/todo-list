@@ -7,8 +7,12 @@ export class List {
         this.todos = [];
     }
 
-    addTodo(title, description, dueDate, priority) {
-        const todo = new Todo(title, description, dueDate, priority);
+    addTodo(title, description, date, time, priority) {
+        const todo = new Todo(title, description, date, time,priority);
+        if (!todo.title || !todo.title.trim().length) {
+            return;
+        }
+        todo.title = todo.title.trim();
         this.todos.push(todo);
     }
 
@@ -22,6 +26,5 @@ export class List {
             this.todos.splice(index, 1);
         }
     }
-
 
 }
