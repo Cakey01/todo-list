@@ -31,4 +31,10 @@ export class Projects {
         this.active = list;
     }
 
+    setActive(id) {
+        const found = this.lists.find(list => list.id === id);
+        if (found) {
+            this.active = found;
+        }
+    }
 }
