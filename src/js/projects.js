@@ -37,4 +37,11 @@ export class Projects {
             this.active = found;
         }
     }
+
+    removeList(id) {
+        const index = this.lists.findIndex(list => list.id === id);
+        if (index !== -1) {
+            this.lists.splice(index, 1);
+        }
+    }
 }
