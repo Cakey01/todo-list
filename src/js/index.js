@@ -1,5 +1,5 @@
 import { Projects } from './projects.js'
-import '../'
+import '../styles/styles.css'
 
 // create projects to group all lists
 const projects = new Projects();
