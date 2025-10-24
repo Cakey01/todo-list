@@ -1,4 +1,5 @@
 import { Todo } from './todo.js';
+import { parseISO, isValid , format } from 'date-fns';
 
 export class List {
     constructor(name) {
@@ -9,11 +10,47 @@ export class List {
 
     addTodo(title, description, date, time, priority) {
         const todo = new Todo(title, description, date, time, priority);
+
+        // title and description check & trim
         if (!todo.title || !todo.title.trim().length) {
             return;
         }
         todo.title = todo.title.trim();
         todo.description = todo.description.trim();
+
+        // date check & time check if date is valid
+        if (todo.date) {
+            const date = todo.date;
+            const parsedDate = parseISO(todo.date);
+            if (isValid(parsedDate)) {
+                todo.date = format(parsedDate, 'MM-dd-yyyy');
+            }
+            if (todo.time) {
+                const parsedDateTime = parseISO(`${date}T${todo.time}`);
+                if (!isValid(parsedDateTime)) {
+                    todo.time = null;
+                }
+            }
+        } else if (!todo.date && todo.time) {
+            const date = format(new Date(), 'yyyy-MM-dd');
+            console.log(date)
+            const parsedDateTime = parseISO(`${date}T${todo.time}`);
+            if (isValid(parsedDateTime)) {
+                todo.date = format(new Date(), 'MM-dd-yyyy');
+            } else {todo.time = null}
+            console.log(todo.time);
+        }
+
+        // priority check
+        if (todo.priority) {
+            const accepted = ['none', 'low', 'medium', 'high'];
+            if (!accepted.includes(todo.priority)) {
+                todo.priority = null;
+            }
+        } else {
+            todo.priority = 'none';
+        }
+
         this.todos.push(todo);
     }
 
