@@ -33,12 +33,10 @@ export class List {
             }
         } else if (!todo.date && todo.time) {
             const date = format(new Date(), 'yyyy-MM-dd');
-            console.log(date)
             const parsedDateTime = parseISO(`${date}T${todo.time}`);
             if (isValid(parsedDateTime)) {
                 todo.date = format(new Date(), 'MM-dd-yyyy');
             } else {todo.time = null}
-            console.log(todo.time);
         }
 
         // priority check
