@@ -15,6 +15,10 @@ export class Display {
 
         // header
         this.header = document.getElementById('listHeader');
+
+        // projects
+        this.projectsDiv = document.getElementById('projects');
+        this.projects = this.projectsDiv.querySelectorAll('button')
     }
     
     clear() {
@@ -23,8 +27,8 @@ export class Display {
 
     // render
 
-    renderTodos(list) {
-        this.header.textContent = list.textContent;
+    renderTodos(header) {
+        this.header.textContent = header;
     }
 
     renderToday() {
@@ -121,8 +125,15 @@ export class Display {
             if (list) {
                 const id = list.id;
             }
-            this.renderTodos(list);
-        })
+            this.renderTodos(list.textContent);
+        });
         
+        // projects on click
+        this.projects.forEach(project => {
+            project.addEventListener('click', () => {
+                const header = project.querySelector('.buttonText').textContent
+                this.renderTodos(header);
+            })
+        })
     }
 }
