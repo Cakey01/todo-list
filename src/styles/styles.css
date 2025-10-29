@@ -47,6 +47,18 @@ body {
 
 #listDialog {
     border: 1px solid grey;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+#listForm > button {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#listForm > input {
+    height: 24px;
+    margin-right: 10px;
 }
 
 ::backdrop {
