@@ -21,6 +21,12 @@ export class Display {
         this.projectsDiv = document.getElementById('projects');
         this.projects = this.projectsDiv.querySelectorAll('button');
 
+        // todo dialog
+        this.newTodoDialog = document.getElementById('todoDialog');
+        this.newTodoAdd = document.getElementById('newTodo');
+        this.newTodoSubmit = document.getElementById('todoSubmit');
+        this.newTodoTitle = document.getElementById('todoTitle')
+
         // todos
         this.todoDiv = document.getElementById('todo');
     }
@@ -86,8 +92,15 @@ export class Display {
 
     // todos
 
-    addTodo() {
-         
+    addTodo(title, description, date, time, priority) {
+         this.project.active.addTodo({ 
+            title: title,
+            description: description,
+            date: date,
+            time: time,
+            priority: priority
+         })
+         console.log(this.project.lists)
     }
 
     expandTodo() {
@@ -145,6 +158,28 @@ export class Display {
             this.renderLists();
         });
 
+        // add todo
+        this.newTodoAdd.addEventListener('click', () => {
+            this.newTodoDialog.showModal();
+        });
+
+        // add todo: check for title
+        this.newTodoTitle.addEventListener('input', () => {
+            if (this.newTodoTitle.value.trim() !== '') {
+                this.newTodoSubmit.disabled = false;
+            } else {
+                this.newTodoSubmit.disabled = true;
+            }
+        });
+
+        this.newTodoSubmit.addEventListener('click', () => {
+            const title = this.newTodoTitle.value;
+            const desc = document.getElementById('todoDesc');
+            const date = document.getElementById('todoDate');
+            const time = document.getElementById('todoTime');
+            const pri = document.getElementById('todoPri');
+            this.addTodo(title, desc.value, date.value, time.value, pri.value)
+        })
         // lists on click
         this.listUl.addEventListener('click', (e) => {
             const list = e.target.closest('.listItem');

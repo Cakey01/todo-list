@@ -6,6 +6,7 @@ import '../styles/styles.css'
 // create projects to group all lists
 const project = new Projects();
 const display = new Display(project);
+
 display.eventListeners();
 
 
