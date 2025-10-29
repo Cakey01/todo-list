@@ -3,6 +3,7 @@ import { Projects } from './projects.js'
 export class Display {
     constructor(project) {
         this.project = project;
+
         // new list dialog
         this.newListDialog = document.getElementById('listDialog');
         this.newListAdd = document.getElementById('newList');
@@ -18,7 +19,10 @@ export class Display {
 
         // projects
         this.projectsDiv = document.getElementById('projects');
-        this.projects = this.projectsDiv.querySelectorAll('button')
+        this.projects = this.projectsDiv.querySelectorAll('button');
+
+        // todos
+        this.todoDiv = document.getElementById('todo');
     }
     
     clear() {
@@ -27,8 +31,31 @@ export class Display {
 
     // render
 
-    renderTodos(header) {
+    renderTodos(header, id) {
         this.header.textContent = header;
+
+        if (header && id) {
+            this.project.setActive(id);
+            const active = this.project.active;
+            active.todos.forEach(todo => {
+                const div = document.createElement('div')
+                div.classList.add('item');
+                const check = document.createElement('input');
+                check.type = 'checkbox';
+                div.appendChild(check);
+                const name = document.createElement('h3');
+                name.textContent = todo.title;
+                div.appendChild(name);
+                if (todo.date) {
+                    const date = document.createElement('h6');
+                    date.textContent = todo.date;
+                    div.appendChild(date);
+                }
+                this.todoDiv.appendChild(div);
+            })
+        }
+
+        console.log(header, id);
     }
 
     renderToday() {
@@ -76,7 +103,6 @@ export class Display {
     }
 
     // lists
-
     addList(name) {
         this.project.addList(name);
     }
@@ -124,15 +150,15 @@ export class Display {
             const list = e.target.closest('.listItem');
             if (list) {
                 const id = list.id;
+                this.renderTodos(list.textContent, id);
             }
-            this.renderTodos(list.textContent);
         });
         
         // projects on click
         this.projects.forEach(project => {
             project.addEventListener('click', () => {
-                const header = project.querySelector('.buttonText').textContent
-                this.renderTodos(header);
+                const header = project.querySelector('.buttonText');
+                this.renderTodos(header.textContent);
             })
         })
     }
