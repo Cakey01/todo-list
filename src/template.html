@@ -9,7 +9,7 @@
     <header>
         <div>
             <h1 id="list">All</h1>
-            <button id="newList">+</button>
+            <button id="newTodo">+</button>
         </div>
         <div class="divider"></div>
     </header>
@@ -39,6 +39,14 @@
             <ul>
             </ul>
         </div>
+        <dialog id="listDialog">
+            <form method="dialog">
+                <label for="listName">Name: </label>
+                <input type="text" id="listName">
+                <button id="listSubmit" value="default" disabled>Submit</button>
+                <button value="cancel" formmethod="dialog">Cancel</buton>
+            </form>
+        </dialog>
     </section>
     
     <section id="todo">

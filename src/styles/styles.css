@@ -43,6 +43,16 @@ body {
     margin: 0;
 }
 
+/* dialogs */
+
+#listDialog {
+    border: 1px solid grey;
+}
+
+::backdrop {
+    opacity: 40%;
+    background: lightgrey;
+}
 /* header */
 
 header {
