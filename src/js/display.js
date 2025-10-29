@@ -10,7 +10,11 @@ export class Display {
         this.newListSubmit = document.getElementById('listSubmit');
         
         // list names
+        this.listUl = document.getElementById('listUl');
         this.lists = document.getElementsByClassName('listItem');
+
+        // header
+        this.header = document.getElementById('listHeader');
     }
     
     clear() {
@@ -19,8 +23,8 @@ export class Display {
 
     // render
 
-    renderAll() {
-        this.renderLists();
+    renderTodos(list) {
+        this.header.textContent = list.textContent;
     }
 
     renderToday() {
@@ -36,16 +40,16 @@ export class Display {
     }
 
     renderLists() {
-        const ul = document.getElementById('listList');
         // clear
-        ul.innerHTML = '';
+        this.listUl.innerHTML = '';
         const lists = this.project.lists;
         // append each list name
         lists.forEach(list => {
             const listItem = document.createElement('li');
             listItem.classList.add('listItem');
             listItem.textContent = list.name;
-            ul.appendChild(listItem);
+            listItem.id = list.id;
+            this.listUl.appendChild(listItem);
         });
     }
 
@@ -111,6 +115,14 @@ export class Display {
             this.renderLists();
         });
 
+        // lists on click
+        this.listUl.addEventListener('click', (e) => {
+            const list = e.target.closest('.listItem');
+            if (list) {
+                const id = list.id;
+            }
+            this.renderTodos(list);
+        })
         
     }
 }
