@@ -45,7 +45,7 @@ body {
 
 /* dialogs */
 
-#listDialog {
+#listDialog, #todoDialog {
     border: 1px solid grey;
     border-radius: 10px;
     padding: 10px;
@@ -57,7 +57,8 @@ body {
     padding-bottom: 0;
 }
 
-#listForm > input {
+#listForm > input,
+.todoInput > input {
     height: 24px;
     margin-right: 10px;
 }
@@ -66,6 +67,17 @@ body {
     opacity: 40%;
     background: lightgrey;
 }
+
+#todoForm {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#todoForm > :last-child {
+    align-self: flex-end;
+}
+
 /* header */
 
 header {
