@@ -108,6 +108,11 @@ export class Display {
         remove.dataset.id = list.id;
 
         div.append(listItem, remove);
+
+        // check if active
+        if (this.project.active.id === listItem.id) {
+            div.style.backgroundColor = 'aliceblue';
+        }
         
         return div;
     }
@@ -235,14 +240,17 @@ export class Display {
 
         // lists on click
         this.listUl.addEventListener('click', (e) => {
-            const list = e.target.closest('.listItem');
-            if (list) {
-                const id = list.id;
+            const listDiv = e.target.closest('.listItemDiv');
+            if (listDiv) {
+                const id = listDiv.querySelector('.listItem').id
                 this.setActive(id);
                 this.renderTodos(this.project.active.name);
+                this.renderLists();
             }
         });
         
+        // list remove on click
+
         // projects on click
         this.projects.forEach(project => {
             project.addEventListener('click', () => {
