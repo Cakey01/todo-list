@@ -25,7 +25,11 @@ export class Display {
         this.newTodoDialog = document.getElementById('todoDialog');
         this.newTodoAdd = document.getElementById('newTodo');
         this.newTodoSubmit = document.getElementById('todoSubmit');
-        this.newTodoTitle = document.getElementById('todoTitle')
+        this.newTodoTitle = document.getElementById('todoTitle');
+        this.newTodoDesc = document.getElementById('todoDesc');
+        this.newTodoDate = document.getElementById('todoDate');
+        this.newTodoTime = document.getElementById('todoTime');
+        this.newTodoPri = document.getElementById('todoPri');
 
         // todos
         this.todoDiv = document.getElementById('todo');
@@ -41,30 +45,40 @@ export class Display {
         this.header.textContent = header;
     }
 
-    renderTodos(header, id) {
+    createTodoElement(todo) {
+        const div = document.createElement('div');
+        div.classList.add('item');
+
+        const check = document.createElement('input');
+        check.type = 'checkbox';
+        if (todo.completed === true) {
+            check.checked = true;
+        } else {
+            check.checked = false;
+        }
+        console.log(todo.completed);
+
+        const title = document.createElement('h3');
+        title.textContent = todo.title;
+
+        div.append(check, title);
+
+        if (todo.date) {
+            const date = document.createElement('h6');
+            date.textContent = todo.date;
+            div.appendChild(date);
+        }
+
+        return div;
+    }
+
+    renderTodos(header) {
         this.changeHeader(header);
         this.clear(this.todoDiv);
 
-        if (header && id) {
-            this.project.setActive(id);
-            const active = this.project.active;
-            active.todos.forEach(todo => {
-                const div = document.createElement('div')
-                div.classList.add('item');
-                const check = document.createElement('input');
-                check.type = 'checkbox';
-                div.appendChild(check);
-                const name = document.createElement('h3');
-                name.textContent = todo.title;
-                div.appendChild(name);
-                if (todo.date) {
-                    const date = document.createElement('h6');
-                    date.textContent = todo.date;
-                    div.appendChild(date);
-                }
-                this.todoDiv.appendChild(div);
-            });
-        }
+        this.project.active.todos.forEach(todo => {
+            this.todoDiv.appendChild(this.createTodoElement(todo));
+        });
     }
 
     renderAll() {
@@ -201,11 +215,11 @@ export class Display {
         // add todo: submit
         this.newTodoSubmit.addEventListener('click', () => {
             const title = this.newTodoTitle.value;
-            const desc = document.getElementById('todoDesc');
-            const date = document.getElementById('todoDate');
-            const time = document.getElementById('todoTime');
-            const pri = document.getElementById('todoPri');
-            this.addTodo(title, desc.value, date.value, time.value, pri.value);
+            const desc = this.newTodoDesc.value;
+            const date = this.newTodoDate.value;
+            const time = this.newTodoTime.value;
+            const pri = this.newTodoPri.value;
+            this.addTodo(title, desc, date, time, pri);
             this.resetDialog(this.newTodoDialog);
             console.log(this.project.active)
             this.renderTodos(this.project.active.name, this.project.active.id);
@@ -216,25 +230,20 @@ export class Display {
             const list = e.target.closest('.listItem');
             if (list) {
                 const id = list.id;
+                this.setActive(id);
                 this.renderTodos(list.textContent, id);
-                if (this.project.active.id !== id) {
-                    this.setActive(id);
-                }
             }
         });
         
         // projects on click
         this.projects.forEach(project => {
             project.addEventListener('click', () => {
-                const header = project.querySelector('.buttonText');
-                if (header.textContent === "All") {
-                    this.renderAll();
-                } else if (header.textContent === 'Today') {
-
-                } else if (header.textContent === 'Past Due') {
-                    
-                } else if (header.textContent === 'Completed') {
-
+                const view = project.dataset.view;
+                switch(view) {
+                    case 'all': this.renderAll(); break;
+                    case 'today': this.renderToday(); break;
+                    case 'past': this.renderPast(); break;
+                    case 'completed': this.renderCompleted(); break;
                 }
             })
         })
