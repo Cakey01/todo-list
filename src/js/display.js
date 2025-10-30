@@ -95,9 +95,9 @@ export class Display {
     addTodo(title, description, date, time, priority) {
          this.project.active.addTodo({ 
             title: title,
-            description: description,
-            date: date,
-            time: time,
+            description: description || null,
+            date: date || null,
+            time: time || null,
             priority: priority
          })
          console.log(this.project.lists)
@@ -172,6 +172,7 @@ export class Display {
             }
         });
 
+        // add todo: submit
         this.newTodoSubmit.addEventListener('click', () => {
             const title = this.newTodoTitle.value;
             const desc = document.getElementById('todoDesc');
@@ -179,7 +180,8 @@ export class Display {
             const time = document.getElementById('todoTime');
             const pri = document.getElementById('todoPri');
             this.addTodo(title, desc.value, date.value, time.value, pri.value)
-        })
+        });
+
         // lists on click
         this.listUl.addEventListener('click', (e) => {
             const list = e.target.closest('.listItem');
