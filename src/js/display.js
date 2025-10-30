@@ -39,6 +39,7 @@ export class Display {
 
     renderTodos(header, id) {
         this.header.textContent = header;
+        this.todoDiv.innerHTML = '';
 
         if (header && id) {
             this.project.setActive(id);
@@ -129,6 +130,17 @@ export class Display {
 
     }
 
+    // reset
+    resetDialog(dialog) {
+        const inputs = dialog.querySelectorAll('input');
+        const submit = dialog.querySelector('button[value="default"]');
+        inputs.forEach(input => {
+            input.value = ''
+        });
+        submit.disabled = true;
+        dialog.close();
+    }
+
     // event listeners
 
     eventListeners() {
@@ -149,9 +161,7 @@ export class Display {
         // add list: submit
         this.newListSubmit.addEventListener('click', () => {
             this.addList(this.newListName.value.trim());
-            this.newListName.value = '';
-            this.newListSubmit.disabled = true;
-            this.newListDialog.close();
+            this.resetDialog(this.newListDialog);
             this.renderLists();
         });
 
@@ -177,9 +187,7 @@ export class Display {
             const time = document.getElementById('todoTime');
             const pri = document.getElementById('todoPri');
             this.addTodo(title, desc.value, date.value, time.value, pri.value);
-            this.newTodoTitle.value = '';
-            this.newTodoSubmit.disabled = true;
-            this.newTodoDialog.close();
+            this.resetDialog(this.newTodoDialog);
             this.renderTodos(this.project.active.name, this.project.active.id);
         });
 

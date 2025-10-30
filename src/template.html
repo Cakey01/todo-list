@@ -48,40 +48,41 @@
             </form>
         </dialog>
     </section>
+    <dialog id="todoDialog">
+        <form id="todoForm" method="dialog">
+            <div class="todoInput">
+                <label for="todoTitle">Title: </label>
+                <input type="text" id="todoTitle">
+            </div>
+            <div class="todoInput">
+                <label for="todoDesc">Description: </label>
+                <input type="text" id="todoDesc">
+            </div>
+            <div class="todoInput">
+                <label for="todoDate">Date: </label>
+                <input type="date" id="todoDate">
+            </div>
+            <div class="todoInput">
+                <label for="todoTime">Time: </label>
+                <input type="time" id="todoTime">
+            </div>
+            <div class="todoInput">
+                <label for="todoPri">Priority: </label>
+                <select name="priority" id="todoPri">
+                    <option value="none" selected>None</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div class="todoInput">
+                <button id="todoSubmit" value="default" disabled>Submit</button>
+                <button value="cancel" formmethod="dialog">Cancel</buton>
+            </div>
+        </form>
+    </dialog>
     <section id="todo">
-        <dialog id="todoDialog">
-            <form id="todoForm" method="dialog">
-                <div class="todoInput">
-                    <label for="todoTitle">Title: </label>
-                    <input type="text" id="todoTitle">
-                </div>
-                <div class="todoInput">
-                    <label for="todoDesc">Description: </label>
-                    <input type="text" id="todoDesc">
-                </div>
-                <div class="todoInput">
-                    <label for="todoDate">Date: </label>
-                    <input type="date" id="todoDate">
-                </div>
-                <div class="todoInput">
-                    <label for="todoTime">Time: </label>
-                    <input type="time" id="todoTime">
-                </div>
-                <div class="todoInput">
-                    <label for="todoPri">Priority: </label>
-                    <select name="priority" id="todoPri">
-                        <option value="none" selected>None</option>
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-                <div class="todoInput">
-                    <button id="todoSubmit" value="default" disabled>Submit</button>
-                    <button value="cancel" formmethod="dialog">Cancel</buton>
-                </div>
-            </form>
-        </dialog>
+        
         <!-- <div class="item">
             <input type="checkbox">
             <h3>Thing1</h3>
