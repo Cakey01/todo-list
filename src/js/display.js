@@ -93,6 +93,24 @@ export class Display {
 
     }
 
+    createListElement(list) {
+        const div = document.createElement('div');
+        div.classList.add('listItemDiv')
+
+        const listItem = document.createElement('li');
+        listItem.classList.add('listItem');
+        listItem.id = list.id;
+        listItem.textContent = list.name;
+
+        const remove = document.createElement('button');
+        remove.classList.add('removeList');
+        remove.textContent = 'x'
+        remove.dataset.id = list.id;
+
+        div.append(listItem, remove);
+        
+        return div;
+    }
     renderLists() {
         // clear
         this.clear(this.listUl);
@@ -100,11 +118,7 @@ export class Display {
         const lists = this.project.lists;
         // append each list name
         lists.forEach(list => {
-            const listItem = document.createElement('li');
-            listItem.classList.add('listItem');
-            listItem.textContent = list.name;
-            listItem.id = list.id;
-            this.listUl.appendChild(listItem);
+            this.listUl.appendChild(this.createListElement(list));
         });
     }
 
