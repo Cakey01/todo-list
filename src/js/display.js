@@ -31,15 +31,19 @@ export class Display {
         this.todoDiv = document.getElementById('todo');
     }
     
-    clear() {
-
+    clear(section) {
+        section.innerHTML = '';
     }
 
     // render
 
-    renderTodos(header, id) {
+    changeHeader(header) {
         this.header.textContent = header;
-        this.todoDiv.innerHTML = '';
+    }
+
+    renderTodos(header, id) {
+        this.changeHeader(header);
+        this.clear(this.todoDiv);
 
         if (header && id) {
             this.project.setActive(id);
@@ -63,6 +67,11 @@ export class Display {
         }
     }
 
+    renderAll() {
+        console.log(this.project)
+        
+    }
+
     renderToday() {
 
     }
@@ -77,7 +86,8 @@ export class Display {
 
     renderLists() {
         // clear
-        this.listUl.innerHTML = '';
+        this.clear(this.listUl);
+
         const lists = this.project.lists;
         // append each list name
         lists.forEach(list => {
@@ -87,6 +97,10 @@ export class Display {
             listItem.id = list.id;
             this.listUl.appendChild(listItem);
         });
+    }
+
+    setActive(id) {
+        this.project.setActive(id);
     }
 
     // todos
@@ -160,8 +174,13 @@ export class Display {
 
         // add list: submit
         this.newListSubmit.addEventListener('click', () => {
+            // add list
             this.addList(this.newListName.value.trim());
+            // switch to list
+            this.renderTodos(this.project.active.name, this.project.active.id);
+            // reset dialog
             this.resetDialog(this.newListDialog);
+            // render lists
             this.renderLists();
         });
 
@@ -188,6 +207,7 @@ export class Display {
             const pri = document.getElementById('todoPri');
             this.addTodo(title, desc.value, date.value, time.value, pri.value);
             this.resetDialog(this.newTodoDialog);
+            console.log(this.project.active)
             this.renderTodos(this.project.active.name, this.project.active.id);
         });
 
@@ -197,6 +217,9 @@ export class Display {
             if (list) {
                 const id = list.id;
                 this.renderTodos(list.textContent, id);
+                if (this.project.active.id !== id) {
+                    this.setActive(id);
+                }
             }
         });
         
@@ -204,7 +227,15 @@ export class Display {
         this.projects.forEach(project => {
             project.addEventListener('click', () => {
                 const header = project.querySelector('.buttonText');
-                this.renderTodos(header.textContent);
+                if (header.textContent === "All") {
+                    this.renderAll();
+                } else if (header.textContent === 'Today') {
+
+                } else if (header.textContent === 'Past Due') {
+                    
+                } else if (header.textContent === 'Completed') {
+
+                }
             })
         })
     }
