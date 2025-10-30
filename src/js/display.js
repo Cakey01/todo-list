@@ -58,10 +58,8 @@ export class Display {
                     div.appendChild(date);
                 }
                 this.todoDiv.appendChild(div);
-            })
+            });
         }
-
-        console.log(header, id);
     }
 
     renderToday() {
@@ -99,8 +97,7 @@ export class Display {
             date: date || null,
             time: time || null,
             priority: priority
-         })
-         console.log(this.project.lists)
+         });
     }
 
     expandTodo() {
@@ -179,7 +176,11 @@ export class Display {
             const date = document.getElementById('todoDate');
             const time = document.getElementById('todoTime');
             const pri = document.getElementById('todoPri');
-            this.addTodo(title, desc.value, date.value, time.value, pri.value)
+            this.addTodo(title, desc.value, date.value, time.value, pri.value);
+            this.newTodoTitle.value = '';
+            this.newTodoSubmit.disabled = true;
+            this.newTodoDialog.close();
+            this.renderTodos(this.project.active.name, this.project.active.id);
         });
 
         // lists on click
