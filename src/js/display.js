@@ -51,12 +51,7 @@ export class Display {
 
         const check = document.createElement('input');
         check.type = 'checkbox';
-        if (todo.completed === true) {
-            check.checked = true;
-        } else {
-            check.checked = false;
-        }
-        console.log(todo.completed);
+        check.checked = todo.completed;
 
         const title = document.createElement('h3');
         title.textContent = todo.title;
@@ -191,7 +186,7 @@ export class Display {
             // add list
             this.addList(this.newListName.value.trim());
             // switch to list
-            this.renderTodos(this.project.active.name, this.project.active.id);
+            this.renderTodos(this.project.active.name);
             // reset dialog
             this.resetDialog(this.newListDialog);
             // render lists
@@ -221,8 +216,7 @@ export class Display {
             const pri = this.newTodoPri.value;
             this.addTodo(title, desc, date, time, pri);
             this.resetDialog(this.newTodoDialog);
-            console.log(this.project.active)
-            this.renderTodos(this.project.active.name, this.project.active.id);
+            this.renderTodos(this.project.active.name);
         });
 
         // lists on click
@@ -231,7 +225,7 @@ export class Display {
             if (list) {
                 const id = list.id;
                 this.setActive(id);
-                this.renderTodos(list.textContent, id);
+                this.renderTodos(this.project.active.name);
             }
         });
         
@@ -245,7 +239,11 @@ export class Display {
                     case 'past': this.renderPast(); break;
                     case 'completed': this.renderCompleted(); break;
                 }
-            })
-        })
+            });
+        });
+        
+        // checkbox
+        
+
     }
 }
