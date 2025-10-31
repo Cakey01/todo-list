@@ -47,6 +47,7 @@ export class Display {
     createTodoElement(todo) {
         const div = document.createElement('div');
         div.classList.add('item');
+        div.id = todo.id;
 
         const check = document.createElement('input');
         check.type = 'checkbox';
