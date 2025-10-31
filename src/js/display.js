@@ -99,9 +99,7 @@ export class Display {
 
                 this.todoDiv.appendChild(itemDiv);
             }
-            
-        })
-        
+        });
     }
 
     renderToday() {
@@ -190,6 +188,13 @@ export class Display {
 
     removeList(id) {
         this.project.removeList(id);
+        // change list to first if exists else change to all
+        if (this.project.lists[0]) {
+            this.setActive(this.project.lists[0].id);
+            this.renderTodos(this.project.active.name);
+        } else {
+            this.renderAll();
+        }
     }
 
     changeProject() {
