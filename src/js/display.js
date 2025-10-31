@@ -52,16 +52,21 @@ export class Display {
         check.type = 'checkbox';
         check.checked = todo.completed;
 
+        const data = document.createElement('div');
+        data.classList.add('todoData');
+
         const title = document.createElement('h3');
         title.textContent = todo.title;
+        data.appendChild(title);
 
-        div.append(check, title);
+        div.appendChild(check);
 
         if (todo.date) {
             const date = document.createElement('h6');
             date.textContent = todo.date;
-            div.appendChild(date);
+            data.appendChild(date);
         }
+        div.appendChild(data);
 
         return div;
     }
@@ -127,6 +132,7 @@ export class Display {
         
         return div;
     }
+
     renderLists() {
         // clear
         this.clear(this.listUl);

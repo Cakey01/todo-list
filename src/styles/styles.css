@@ -224,11 +224,10 @@ header > .divider {
 }
 
 .item {
-    display: grid;
-    grid-template-columns: 15px 1fr;
-    grid-template-rows: 1em 1em;
+    display: flex;
+    gap: 10px;
     height: 45px;
-    gap: 5px;
+    align-items: center;
 }
 
 .item > * {
@@ -242,14 +241,19 @@ header > .divider {
     border-radius: 100%;
 }
 
-.item > h3 {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
+.todoData > h3 {
     font-weight: 500;
+    line-height: 1;
+    padding-top: 2px;
 }
 
-.item > h6 {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
+.todoData > h6 {
+    line-height: 1;
     font-weight: 400;
+}
+
+.todoData {
+    display: flex;
+    flex-direction: column;
+    height: min-content;
 }
