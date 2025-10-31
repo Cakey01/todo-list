@@ -76,7 +76,19 @@ export class Display {
     }
 
     renderAll() {
-        console.log(this.project)
+        const allLists = this.project.lists;
+        console.log(allLists)
+        this.changeHeader('All')
+        this.clear(this.todoDiv)
+        allLists.forEach(list => {
+            const name = document.createElement('h2');
+            name.textContent = list.name;
+            this.todoDiv.appendChild(name)
+
+            list.todos.forEach(todo => {
+                this.todoDiv.appendChild(this.createTodoElement(todo));
+            })
+        })
         
     }
 
