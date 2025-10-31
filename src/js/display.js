@@ -240,6 +240,7 @@ export class Display {
         this.newListSubmit.addEventListener('click', () => {
             // add list
             this.addList(this.newListName.value.trim());
+            this.newTodoAdd.disabled = false;
             // switch to list
             this.renderTodos(this.project.active.name);
             // reset dialog
@@ -294,6 +295,7 @@ export class Display {
             if (listDiv) {
                 const id = listDiv.querySelector('.listItem').id
                 this.setActive(id);
+                this.newTodoAdd.disabled = false;
                 this.renderTodos(this.project.active.name);
                 this.renderLists();
             } 
@@ -303,6 +305,8 @@ export class Display {
         this.projects.forEach(project => {
             project.addEventListener('click', () => {
                 const view = project.dataset.view;
+                this.newTodoAdd.disabled = true;
+
                 switch(view) {
                     case 'all': this.renderAll(); break;
                     case 'today': this.renderToday(); break;
