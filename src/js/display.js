@@ -82,17 +82,24 @@ export class Display {
 
     renderAll() {
         const allLists = this.project.lists;
-        console.log(allLists)
-        this.changeHeader('All')
-        this.clear(this.todoDiv)
+        this.changeHeader('All');
+        this.clear(this.todoDiv);
         allLists.forEach(list => {
-            const name = document.createElement('h2');
-            name.textContent = list.name;
-            this.todoDiv.appendChild(name)
+            if (list.todos.length > 0) {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('itemDiv');
 
-            list.todos.forEach(todo => {
-                this.todoDiv.appendChild(this.createTodoElement(todo));
-            })
+                const name = document.createElement('h2');
+                name.textContent = list.name;
+                itemDiv.appendChild(name);
+
+                list.todos.forEach(todo => {
+                    itemDiv.appendChild(this.createTodoElement(todo));
+                });
+
+                this.todoDiv.appendChild(itemDiv);
+            }
+            
         })
         
     }

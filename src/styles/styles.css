@@ -221,6 +221,9 @@ header > .divider {
     padding: 10px;
     height: 100%;
     overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .item {
@@ -256,4 +259,13 @@ header > .divider {
     display: flex;
     flex-direction: column;
     height: min-content;
+}
+
+.itemDiv {
+    height: min-content;
+    border-bottom: 1px solid lightgrey;
+}
+
+.itemDiv > h2 {
+    line-height: 1;
 }
