@@ -32,6 +32,7 @@ export class Display {
 
         // todos
         this.todoDiv = document.getElementById('todo');
+        this.todoItem = document.querySelectorAll('.item')
     }
     
     clear(section) {
@@ -164,6 +165,11 @@ export class Display {
             time: time || null,
             priority: priority
          });
+    }
+
+    changeCompletion(id, completion) {
+        const todo = this.project.active.findTodo(id);
+        todo.completed = completion;
     }
 
     expandTodo() {
@@ -307,7 +313,17 @@ export class Display {
         });
         
         // checkbox
-        
+        this.todoDiv.addEventListener('click', (e) => {
+            const checkbox = e.target.closest('input');
+            if (checkbox) {
+                const id = checkbox.parentElement.id;
+                if (checkbox.checked) {
+                    this.changeCompletion(id, true);
+                } else {
+                    this.changeCompletion(id, false);
+                }
+            }
+        })
 
     }
 }

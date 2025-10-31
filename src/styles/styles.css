@@ -247,7 +247,7 @@ header > .divider {
 .todoData > h3 {
     font-weight: 500;
     line-height: 1;
-    padding-top: 2px;
+    padding-top: 1px;
 }
 
 .todoData > h6 {
