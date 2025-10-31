@@ -12,7 +12,6 @@ export class Display {
         
         // list names
         this.listUl = document.getElementById('listUl');
-        this.lists = document.getElementsByClassName('listItem');
 
         // header
         this.header = document.getElementById('listHeader');
@@ -164,8 +163,8 @@ export class Display {
 
     }
 
-    removeList() {
-        
+    removeList(id) {
+        this.project.removeList(id);
     }
 
     changeProject() {
@@ -241,16 +240,23 @@ export class Display {
         // lists on click
         this.listUl.addEventListener('click', (e) => {
             const listDiv = e.target.closest('.listItemDiv');
+            const remove = e.target.closest('.removeList');
             if (listDiv) {
                 const id = listDiv.querySelector('.listItem').id
                 this.setActive(id);
                 this.renderTodos(this.project.active.name);
                 this.renderLists();
+            } 
+            // handle remove list
+            if (remove) {
+                const id = remove.dataset.id;
+                if (confirm('Delete list?') === true) {
+                    this.removeList(id);
+                    this.renderLists();
+                }
             }
         });
-        
-        // list remove on click
-
+ 
         // projects on click
         this.projects.forEach(project => {
             project.addEventListener('click', () => {
