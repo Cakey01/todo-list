@@ -269,22 +269,27 @@ export class Display {
 
         // lists on click
         this.listUl.addEventListener('click', (e) => {
-            const listDiv = e.target.closest('.listItemDiv');
             const remove = e.target.closest('.removeList');
+
+            // handle remove list
+            if (remove) {
+                e.stopPropagation();
+                const id = remove.dataset.id;
+                if (confirm('Delete list?')) {
+                    this.removeList(id);
+                    this.renderLists();
+                }
+                return;
+            }
+
+            // handle list click
+            const listDiv = e.target.closest('.listItemDiv');
             if (listDiv) {
                 const id = listDiv.querySelector('.listItem').id
                 this.setActive(id);
                 this.renderTodos(this.project.active.name);
                 this.renderLists();
             } 
-            // handle remove list
-            if (remove) {
-                const id = remove.dataset.id;
-                if (confirm('Delete list?') === true) {
-                    this.removeList(id);
-                    this.renderLists();
-                }
-            }
         });
  
         // projects on click
