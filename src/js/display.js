@@ -131,7 +131,9 @@ export class Display {
     }
 
     findList(id) {
-        return this.project.lists.find(list => list.id === id);
+        return this.project.lists.find(list => 
+            list.todos.some(todo => todo.id === id)
+        );
     }
 
     setActiveList(id) {
@@ -199,12 +201,15 @@ export class Display {
         });
     }
 
-        //fix later
-    changeCompletion(id, completion) {
-        // cant change completion in other views yet
 
-        const todo = this.activeList.findTodo(id);
-        todo.completed = completion;
+    changeCompletion(id, completion) {
+        const list = this.findList(id);
+        if (list) {
+            const todo = list.findTodo(id);
+            if (todo) {
+                todo.completed = completion;
+            }
+        }
     }
 
     expandTodo(id) {
