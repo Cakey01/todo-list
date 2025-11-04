@@ -223,14 +223,15 @@ header > .divider {
     overflow: auto;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 }
 
 .item {
     display: flex;
     gap: 10px;
-    height: 45px;
+    height: 30px;
     align-items: center;
+    padding: 15px 0 15px 0;
 }
 
 .item > * {
@@ -247,7 +248,6 @@ header > .divider {
 .todoData > h3 {
     font-weight: 500;
     line-height: 1;
-    padding-top: 1px;
 }
 
 .todoData > h6 {
@@ -264,8 +264,24 @@ header > .divider {
 .itemDiv {
     height: min-content;
     border-bottom: 1px solid lightgrey;
+    padding-bottom: 5px;
 }
 
 .itemDiv > h2 {
     line-height: 1;
 }
+
+.removeTodo {
+    height: min-content;
+    width: min-content;;
+    padding: 0;
+    margin: 0;
+    display: none;
+    background: none;
+    border: none;
+    margin-left: auto;
+}
+
+.item:hover .removeTodo {
+    display: block;
+} 

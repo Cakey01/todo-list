@@ -59,6 +59,13 @@ export class Display {
 
         const title = document.createElement('h3');
         title.textContent = todo.title;
+
+        const remove = document.createElement('button');
+        remove.classList.add('removeTodo');
+        remove.textContent = 'x';
+        remove.dataset.id = todo.id;
+
+
         data.appendChild(title);
 
         div.appendChild(check);
@@ -68,7 +75,7 @@ export class Display {
             date.textContent = todo.date;
             data.appendChild(date);
         }
-        div.appendChild(data);
+        div.append(data, remove);
 
         return div;
     }
@@ -172,16 +179,15 @@ export class Display {
         todo.completed = completion;
     }
 
-    expandTodo() {
-
+    expandTodo(id) {
     }
 
     editTodo() {
 
     }
 
-    removeTodo() {
-
+    removeTodo(id) {
+        this.project.active.removeTodo(id);
     }
 
     // lists
@@ -315,19 +321,41 @@ export class Display {
                 }
             });
         });
-        
-        // checkbox
+
+        // todo on click
         this.todoDiv.addEventListener('click', (e) => {
+            const remove = e.target.closest('.removeTodo')
+
+            // handle remove todo
+            if (remove) {
+                e.stopPropagation();
+                const id = remove.dataset.id;
+                if (confirm('Remove to-do item?')) {
+                    this.removeTodo(id);
+                    this.renderTodos(this.project.active.name);
+                }
+                return;
+            }
+
+            // handle checkbox
             const checkbox = e.target.closest('input');
             if (checkbox) {
+                e.stopPropagation();
                 const id = checkbox.parentElement.id;
                 if (checkbox.checked) {
                     this.changeCompletion(id, true);
                 } else {
                     this.changeCompletion(id, false);
                 }
+                return;
             }
-        })
 
+            // handle todo details
+            const todo = e.target.closest('.item');
+            if (todo) {
+                const id = todo.id;
+            }
+            
+        })
     }
 }
