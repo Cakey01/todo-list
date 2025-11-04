@@ -66,7 +66,7 @@ export class Display {
 
         const edit = document.createElement('button');
         edit.classList.add('editTodo');
-        edit.textContent = '...'
+        edit.textContent = 'edit'
 
 
 
@@ -79,7 +79,7 @@ export class Display {
             date.textContent = todo.date;
             data.appendChild(date);
         }
-        div.append(data, remove);
+        div.append(data, edit, remove);
 
         return div;
     }
@@ -358,7 +358,7 @@ export class Display {
             // handle todo details
             const todo = e.target.closest('.item');
             if (todo) {
-                const id = todo.id;
+                const id = todo.dataset.id;
                 this.expandTodo(id);
             }
             

@@ -271,7 +271,7 @@ header > .divider {
     line-height: 1;
 }
 
-.removeTodo {
+.removeTodo, .editTodo {
     height: min-content;
     width: min-content;;
     padding: 0;
@@ -279,9 +279,13 @@ header > .divider {
     display: none;
     background: none;
     border: none;
+}
+
+.editTodo {
     margin-left: auto;
 }
 
-.item:hover .removeTodo {
+.item:hover .removeTodo,
+.item:hover .editTodo{
     display: block;
 } 
