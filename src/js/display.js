@@ -130,21 +130,20 @@ export class Display {
     createListElement(list) {
         const div = document.createElement('div');
         div.classList.add('listItemDiv')
+        div.dataset.id = list.id;
 
         const listItem = document.createElement('li');
         listItem.classList.add('listItem');
-        listItem.id = list.id;
         listItem.textContent = list.name;
 
         const remove = document.createElement('button');
         remove.classList.add('removeList');
         remove.textContent = 'x'
-        remove.dataset.id = list.id;
 
         div.append(listItem, remove);
 
         // check if active
-        if (this.project.active.id === listItem.id) {
+        if (this.project.active.id === div.dataset.id) {
             div.style.backgroundColor = 'aliceblue';
         }
         
@@ -294,7 +293,7 @@ export class Display {
             // handle remove list
             if (remove) {
                 e.stopPropagation();
-                const id = remove.dataset.id;
+                const id = remove.parentElement.dataset.id;
                 if (confirm('Delete list?')) {
                     this.removeList(id);
                     this.renderLists();
@@ -305,7 +304,7 @@ export class Display {
             // handle list click
             const listDiv = e.target.closest('.listItemDiv');
             if (listDiv) {
-                const id = listDiv.querySelector('.listItem').id
+                const id = listDiv.dataset.id
                 this.setActive(id);
                 this.newTodoAdd.disabled = false;
                 this.renderTodos(this.project.active.name);
