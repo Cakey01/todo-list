@@ -43,9 +43,211 @@ body {
     margin: 0;
 }
 
+/* header */
+
+header {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+}
+
+#headerContainer {
+    display: flex;
+    gap: 10px;
+}
+
+#currentView {
+    align-self: center;
+    justify-self: start;
+    padding-left: 15px;
+    padding-top: 8px;
+}
+
+#addTodo {
+    width: 30px;
+    height: 30px;
+    align-self: center;
+    margin-right: 15px;
+}
+
+header > .divider {
+    justify-self: flex-end;
+    align-self: center;
+    width: 98%
+}
+
+/* divider */
+
+.divider {
+    background-color: lightgrey;
+    height: 1px;
+    width: 89%;
+}
+
+/* remove and edit buttons */
+
+.remove {
+    height: min-content;
+    width: min-content;;
+    padding: 0;
+    margin: 0;
+    display: none;
+    background: none;
+    border: none;
+}
+
+.list-item-container:hover .remove,
+.list-item-container:hover .edit,
+.todo-item:hover .remove,
+.todo-item:hover .edit {
+    display: block;
+}
+
+/* sidebar */
+
+#sidebar {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    border-right: 1px solid lightgrey;
+    box-shadow: -1px 0px 6px 1px lightgrey;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+/* sidebar: views */
+
+#views {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    padding-top: 10px;
+    gap: 10px;
+    width: 100%;
+    place-items: center;
+}
+
+.view-btn {
+    height: 50px;
+    width: 100px;
+}
+
+/* sidebar: lists */
+
+#lists {
+    display: grid;
+    grid-template-columns: 1fr 30px;
+    grid-template-rows: 30px 1fr;
+    overflow: auto;
+    padding: 0 10px 0 10px;
+    width: 100%;
+}
+
+#lists > h4 {
+    align-self: center;
+    justify-self: start;
+}
+
+#listContainer {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    grid-column: 1 / 3;
+}
+
+#addList {
+    height: 28px;
+    width: 28px;
+}
+
+.list-item-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    width: 100%;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+}
+
+.list-item-container:hover {
+    background-color: aliceblue;
+}
+
+/* todo */
+
+#todoContainer {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    padding: 10px;
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.todo-item {
+    display: flex;
+    gap: 10px;
+    height: 30px;
+    align-items: center;
+    padding: 15px 0 15px 0;
+}
+
+.todo-item > * {
+    margin: 0;
+    padding: 0;
+}
+
+.todo-item > input {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    border-radius: 100%;
+}
+
+.todo-content {
+    display: flex;
+    flex-direction: column;
+    height: min-content;
+}
+
+.todo-title {
+    font-weight: 500;
+    line-height: 1;
+}
+
+.todo-date {
+    line-height: 1;
+    font-weight: 400;
+}
+
+.item-container {
+    height: min-content;
+    border-bottom: 1px solid lightgrey;
+    padding-bottom: 5px;
+}
+
+.item-container > h2 {
+    line-height: 1;
+}
+
+.todo-item .edit {
+    margin-left: auto;
+}
+
 /* dialogs */
 
-#listDialog, #todoDialog {
+dialog {
     border: 1px solid grey;
     border-radius: 10px;
     padding: 10px;
@@ -77,215 +279,3 @@ body {
 #todoForm > :last-child {
     align-self: flex-end;
 }
-
-/* header */
-
-header {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    justify-content: space-between;
-}
-
-header > div {
-    display: flex;
-    gap: 10px;
-}
-
-header > div > h1 {
-    align-self: center;
-    justify-self: start;
-    padding-left: 15px;
-    padding-top: 8px;
-}
-
-header > div > button {
-    width: 30px;
-    height: 30px;
-    align-self: center;
-    margin-right: 15px;
-}
-
-header > .divider {
-    justify-self: flex-end;
-    align-self: center;
-    width: 98%
-}
-
-/* sidebar */
-
-#sidebar {
-    grid-column: 1 / 2;
-    grid-row: 1 / 3;
-    border-right: 1px solid lightgrey;
-    box-shadow: -1px 0px 6px 1px lightgrey;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-}
-
-/* projects */
-#projects {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    padding-top: 10px;
-    gap: 10px;
-    width: 100%;
-    place-items: center;
-}
-
-#projects > button {
-    height: 50px;
-    width: 100px;
-}
-
-/* divider */
-
-.divider {
-    background-color: lightgrey;
-    height: 1px;
-    width: 89%;
-}
-
-/* Lists */
-
-#lists {
-    display: grid;
-    grid-template-columns: 1fr 30px;
-    grid-template-rows: 30px 1fr;
-    overflow: auto;
-    padding: 0 10px 0 10px;
-    width: 100%;
-}
-
-#lists > h4 {
-    align-self: center;
-    justify-self: start;
-}
-
-#listUl {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    grid-column: 1 / 3;
-}
-
-#newList {
-    height: 28px;
-    width: 28px;
-}
-
-.listItemDiv {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px;
-    width: 100%;
-    height: 25px;
-    border: none;
-    border-radius: 5px;
-}
-
-.removeList {
-    height: min-content;
-    width: min-content;;
-    padding: 0;
-    margin: 0;
-    display: none;
-    background: none;
-    border: none;
-}
-
-.listItemDiv:hover .removeList {
-    display: block;
-}
-
-.listItemDiv:hover {
-    background-color: aliceblue;
-}
-
-
-/* todo */
-
-#todo {
-    grid-column: 2 / 3;
-    grid-row: 2 / 3;
-    padding: 10px;
-    height: 100%;
-    overflow: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.item {
-    display: flex;
-    gap: 10px;
-    height: 30px;
-    align-items: center;
-    padding: 15px 0 15px 0;
-}
-
-.item > * {
-    margin: 0;
-    padding: 0;
-}
-
-.item > input {
-    grid-column: 1 / 2;
-    grid-row: 1 / 3;
-    border-radius: 100%;
-}
-
-.todoData > h3 {
-    font-weight: 500;
-    line-height: 1;
-}
-
-.todoData > h6 {
-    line-height: 1;
-    font-weight: 400;
-}
-
-.todoData {
-    display: flex;
-    flex-direction: column;
-    height: min-content;
-}
-
-.itemDiv {
-    height: min-content;
-    border-bottom: 1px solid lightgrey;
-    padding-bottom: 5px;
-}
-
-.itemDiv > h2 {
-    line-height: 1;
-}
-
-.removeTodo, .editTodo {
-    height: min-content;
-    width: min-content;;
-    padding: 0;
-    margin: 0;
-    display: none;
-    background: none;
-    border: none;
-}
-
-.editTodo {
-    margin-left: auto;
-}
-
-.item:hover .removeTodo,
-.item:hover .editTodo{
-    display: block;
-} 
