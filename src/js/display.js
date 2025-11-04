@@ -48,7 +48,7 @@ export class Display {
     createTodoElement(todo) {
         const div = document.createElement('div');
         div.classList.add('item');
-        div.id = todo.id;
+        div.dataset.id = todo.id;
 
         const check = document.createElement('input');
         check.type = 'checkbox';
@@ -63,7 +63,11 @@ export class Display {
         const remove = document.createElement('button');
         remove.classList.add('removeTodo');
         remove.textContent = 'x';
-        remove.dataset.id = todo.id;
+
+        const edit = document.createElement('button');
+        edit.classList.add('editTodo');
+        edit.textContent = '...'
+
 
 
         data.appendChild(title);
@@ -180,6 +184,8 @@ export class Display {
     }
 
     expandTodo(id) {
+        const todo = this.project.active.findTodo(id);
+        console.log(todo)
     }
 
     editTodo() {
@@ -329,7 +335,7 @@ export class Display {
             // handle remove todo
             if (remove) {
                 e.stopPropagation();
-                const id = remove.dataset.id;
+                const id = remove.parentElement.dataset.id;
                 if (confirm('Remove to-do item?')) {
                     this.removeTodo(id);
                     this.renderTodos(this.project.active.name);
@@ -341,7 +347,7 @@ export class Display {
             const checkbox = e.target.closest('input');
             if (checkbox) {
                 e.stopPropagation();
-                const id = checkbox.parentElement.id;
+                const id = checkbox.parentElement.dataset.id;
                 if (checkbox.checked) {
                     this.changeCompletion(id, true);
                 } else {
@@ -354,6 +360,7 @@ export class Display {
             const todo = e.target.closest('.item');
             if (todo) {
                 const id = todo.id;
+                this.expandTodo(id);
             }
             
         })
