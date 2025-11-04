@@ -81,6 +81,24 @@ export class Display {
     }
 
     // lists
+    
+    // find list and todo by todo id
+    find(id) {
+        const list = this.project.lists.find(list => 
+            list.todos.some(todo => todo.id === id)
+        );
+
+        if (list) {
+            const todo = list.findTodo(id);
+            return { list, todo };
+        }
+        return null;
+    }
+
+    setActiveList(id) {
+        this.activeList = this.project.findList(id);
+    }
+
     addList(name) {
         this.project.addList(name);
     }
@@ -128,16 +146,6 @@ export class Display {
         lists.forEach(list => {
             this.listContainer.appendChild(this.createListElement(list));
         });
-    }
-
-    findList(id) {
-        return this.project.lists.find(list => 
-            list.todos.some(todo => todo.id === id)
-        );
-    }
-
-    setActiveList(id) {
-        this.activeList = this.project.findList(id);
     }
 
     // todos
@@ -201,14 +209,10 @@ export class Display {
         });
     }
 
-
     changeCompletion(id, completion) {
-        const list = this.findList(id);
-        if (list) {
-            const todo = list.findTodo(id);
-            if (todo) {
-                todo.completed = completion;
-            }
+        const found = this.find(id);
+        if (found) {
+            found.todo.completed = completion;
         }
     }
 
