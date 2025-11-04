@@ -90,7 +90,7 @@ header > .divider {
 
 /* remove and edit buttons */
 
-.remove {
+.remove, .edit {
     height: min-content;
     width: min-content;;
     padding: 0;
@@ -98,6 +98,11 @@ header > .divider {
     display: none;
     background: none;
     border: none;
+}
+
+.edit {
+    margin-left: auto;
+    padding-right: 10px;
 }
 
 .list-item-container:hover .remove,
