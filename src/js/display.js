@@ -1,198 +1,83 @@
-import { Projects } from './projects.js'
+import { Projects } from './projects.js';
 
 export class Display {
     constructor(project) {
+        // project
         this.project = project;
 
-        // new list dialog
-        this.newListDialog = document.getElementById('listDialog');
-        this.newListAdd = document.getElementById('newList');
-        this.newListName = document.getElementById('listName');
-        this.newListSubmit = document.getElementById('listSubmit');
-        
-        // list names
-        this.listUl = document.getElementById('listUl');
-
-        // header
-        this.header = document.getElementById('listHeader');
-
-        // projects
-        this.projectsDiv = document.getElementById('projects');
-        this.projects = this.projectsDiv.querySelectorAll('button');
+        // list dialog
+        this.listDialog = document.getElementById('listDialog');
+        this.addListBtn = document.getElementById('addList');
+        this.listInputName = document.getElementById('listInputName');
+        this.listSubmit = document.getElementById('listSubmit');
 
         // todo dialog
-        this.newTodoDialog = document.getElementById('todoDialog');
-        this.newTodoAdd = document.getElementById('newTodo');
-        this.newTodoSubmit = document.getElementById('todoSubmit');
-        this.newTodoTitle = document.getElementById('todoTitle');
-        this.newTodoDesc = document.getElementById('todoDesc');
-        this.newTodoDate = document.getElementById('todoDate');
-        this.newTodoTime = document.getElementById('todoTime');
-        this.newTodoPri = document.getElementById('todoPri');
+        this.todoDialog = document.getElementById('todoDialog');
+        this.addTodoBtn = document.getElementById('addTodo');
+        this.todoSubmit = document.getElementById('todoSubmit');
+        this.todoInputTitle = document.getElementById('todoInputTitle');
+        this.todoInputDesc = document.getElementById('todoInputDesc');
+        this.todoInputDate = document.getElementById('todoInputDate');
+        this.todoInputTime = document.getElementById('todoInputTime');
+        this.todoInputPri = document.getElementById('todoInputPri');
+
+        // lists
+        this.listContainer = document.getElementById('listContainer');
+        this.activeList = null;
 
         // todos
-        this.todoDiv = document.getElementById('todo');
-        this.todoItem = document.querySelectorAll('.item')
+        this.todoContainer = document.getElementById('todoContainer');
+        this.todoItem = document.querySelectorAll('.todo-item');
+
+        // header
+        this.header = document.getElementById('currentView')
+
+        // views
+        this.views = document.getElementById('views');
+        this.viewBtns = document.querySelectorAll('.view-btn');
     }
-    
+
+    // helpers
     clear(section) {
         section.innerHTML = '';
     }
 
-    // render
+    resetDialog(dialog) {
+        const inputs = dialog.querySelectorAll('input');
+        const submit = dialog.querySelector('button[value="default"]');
 
-    changeHeader(header) {
-        this.header.textContent = header;
-    }
-
-    createTodoElement(todo) {
-        const div = document.createElement('div');
-        div.classList.add('item');
-        div.dataset.id = todo.id;
-
-        const check = document.createElement('input');
-        check.type = 'checkbox';
-        check.checked = todo.completed;
-
-        const data = document.createElement('div');
-        data.classList.add('todoData');
-
-        const title = document.createElement('h3');
-        title.textContent = todo.title;
-
-        const remove = document.createElement('button');
-        remove.classList.add('removeTodo');
-        remove.textContent = 'x';
-
-        const edit = document.createElement('button');
-        edit.classList.add('editTodo');
-        edit.textContent = 'edit'
-
-
-
-        data.appendChild(title);
-
-        div.appendChild(check);
-
-        if (todo.date) {
-            const date = document.createElement('h6');
-            date.textContent = todo.date;
-            data.appendChild(date);
-        }
-        div.append(data, edit, remove);
-
-        return div;
-    }
-
-    renderTodos(header) {
-        this.changeHeader(header);
-        this.clear(this.todoDiv);
-
-        this.project.active.todos.forEach(todo => {
-            this.todoDiv.appendChild(this.createTodoElement(todo));
+        inputs.forEach(input => {
+            input.value = '';
         });
+        submit.disabled = true;
+        dialog.close();
+    }
+
+    // views
+    changeView(view) {
+        this.header.textContent = view;
     }
 
     renderAll() {
-        const allLists = this.project.lists;
-        this.changeHeader('All');
-        this.clear(this.todoDiv);
-        allLists.forEach(list => {
+        const all = this.project.lists;
+        this.changeView('All');
+        this.clear(this.todoContainer);
+        all.forEach(list => {
             if (list.todos.length > 0) {
-                const itemDiv = document.createElement('div');
-                itemDiv.classList.add('itemDiv');
+                const container = document.createElement('div');
+                container.classList.add('item-container');
 
                 const name = document.createElement('h2');
                 name.textContent = list.name;
-                itemDiv.appendChild(name);
+                container.appendChild(name);
 
                 list.todos.forEach(todo => {
-                    itemDiv.appendChild(this.createTodoElement(todo));
+                    container.appendChild(this.createTodoElement(todo));
                 });
 
-                this.todoDiv.appendChild(itemDiv);
+                this.todoContainer.appendChild(container);
             }
-        });
-    }
-
-    renderToday() {
-
-    }
-
-    renderCompleted() {
-
-    }
-
-    renderPast() {
-
-    }
-
-    createListElement(list) {
-        const div = document.createElement('div');
-        div.classList.add('listItemDiv')
-        div.dataset.id = list.id;
-
-        const listItem = document.createElement('li');
-        listItem.classList.add('listItem');
-        listItem.textContent = list.name;
-
-        const remove = document.createElement('button');
-        remove.classList.add('removeList');
-        remove.textContent = 'x'
-
-        div.append(listItem, remove);
-
-        // check if active
-        if (this.project.active.id === div.dataset.id) {
-            div.style.backgroundColor = 'aliceblue';
-        }
-        
-        return div;
-    }
-
-    renderLists() {
-        // clear
-        this.clear(this.listUl);
-
-        const lists = this.project.lists;
-        // append each list name
-        lists.forEach(list => {
-            this.listUl.appendChild(this.createListElement(list));
-        });
-    }
-
-    setActive(id) {
-        this.project.setActive(id);
-    }
-
-    // todos
-
-    addTodo(title, description, date, time, priority) {
-         this.project.active.addTodo({ 
-            title: title,
-            description: description || null,
-            date: date || null,
-            time: time || null,
-            priority: priority
-         });
-    }
-
-    changeCompletion(id, completion) {
-        const todo = this.project.active.findTodo(id);
-        todo.completed = completion;
-    }
-
-    expandTodo(id) {
-        const todo = this.project.active.findTodo(id);
-        console.log(todo)
-    }
-
-    editTodo() {
-
-    }
-
-    removeTodo(id) {
-        this.project.active.removeTodo(id);
+        })
     }
 
     // lists
@@ -200,97 +85,170 @@ export class Display {
         this.project.addList(name);
     }
 
-    editList() {
-
-    }
-
     removeList(id) {
         this.project.removeList(id);
         // change list to first if exists else change to all
         if (this.project.lists[0]) {
-            this.setActive(this.project.lists[0].id);
-            this.renderTodos(this.project.active.name);
-        } else {
-            this.renderAll();
+            this.setActiveList(this.project.lists[0].id);
+            this.renderTodos(this.activeList);
         }
     }
 
-    changeProject() {
+    createListElement(list) {
+        const container = document.createElement('div');
+        container.classList.add('list-item-container');
+        container.dataset.id = list.id;
 
+        const item = document.createElement('li');
+        item.classList.add('list-item');
+        item.textContent = list.name;
+
+        const remove = document.createElement('button');
+        remove.classList.add('remove');
+        remove.textContent = 'x';
+
+        const edit = document.createElement('button');
+        edit.classList.add('edit');
+        edit.textContent = 'edit';
+
+        container.append(item, edit, remove);
+
+        // background color if active
+        if (this.activeList.id === container.dataset.id) {
+            container.style.backgroundColor = 'aliceblue';
+        }
+
+        return container;
     }
 
-    // reset
-    resetDialog(dialog) {
-        const inputs = dialog.querySelectorAll('input');
-        const submit = dialog.querySelector('button[value="default"]');
-        inputs.forEach(input => {
-            input.value = ''
+    renderLists() {
+        this.clear(this.listContainer);
+
+        const lists = this.project.lists;
+        lists.forEach(list => {
+            this.listContainer.appendChild(this.createListElement(list));
         });
-        submit.disabled = true;
-        dialog.close();
+    }
+
+    findList(id) {
+        return this.project.lists.find(list => list.id === id);
+    }
+
+    setActiveList(id) {
+        this.activeList = this.project.findList(id);
+    }
+
+    // todos
+    addTodo(list, title, description, date, time, priority) {
+        list.addTodo({
+            title: title,
+            description: description || null,
+            date: date || null,
+            time: time || null,
+            priority: priority
+        });
+    }
+
+    removeTodo(id) {
+        this.activeList.removeTodo(id);
+    }
+
+    createTodoElement(todo) {
+        const container = document.createElement('div');
+        container.classList.add('todo-item');
+        container.dataset.id = todo.id;
+
+        const check = document.createElement('input');
+        check.type = 'checkbox';
+        check.checked = todo.completed;
+
+        const content = document.createElement('div');
+        content.classList.add('todo-content');
+
+        const title = document.createElement('h3');
+        title.classList.add('todo-title');
+        title.textContent = todo.title;
+
+        const remove = document.createElement('button');
+        remove.classList.add('remove');
+        remove.textContent = 'x';
+
+        const edit = document.createElement('button');
+        edit.classList.add('edit');
+        edit.textContent = 'edit';
+
+        content.appendChild(title);
+
+        if (todo.date) {
+            const date = document.createElement('h6');
+            date.textContent = todo.date;
+            content.appendChild(date);
+        }
+
+        container.append(check, content, edit, remove);
+
+        return container;
+    }
+
+    renderTodos(list) {
+        this.changeView(list.name);
+        this.clear(this.todoContainer);
+
+        list.todos.forEach(todo => {
+            this.todoContainer.appendChild(this.createTodoElement(todo));
+        });
+    }
+
+        //fix later
+    changeCompletion(id, completion) {
+        // cant change completion in other views yet
+
+        const todo = this.activeList.findTodo(id);
+        todo.completed = completion;
+    }
+
+    expandTodo(id) {
+        // ...
+    }
+
+    editTodo(id) {
+        // ...
     }
 
     // event listeners
-
     eventListeners() {
         // add list
-        this.newListAdd.addEventListener('click', () => {
-            this.newListDialog.showModal();
+        this.addListBtn.addEventListener('click', () => {
+            this.listDialog.showModal();
         });
 
         // add list: check for input
-        this.newListName.addEventListener('input', () => {
-            if (this.newListName.value.trim() !== '') {
-                this.newListSubmit.disabled = false;
+        this.listInputName.addEventListener('input', () => {
+            if (this.listInputName.value.trim() !== '') {
+                this.listSubmit.disabled = false;
             } else {
-                this.newListSubmit.disabled = true;
+                this.listSubmit.disabled = true;
             }
         });
 
         // add list: submit
-        this.newListSubmit.addEventListener('click', () => {
-            // add list
-            this.addList(this.newListName.value.trim());
-            this.newTodoAdd.disabled = false;
+        this.listSubmit.addEventListener('click', () => {
+            // add list and set as active
+            this.setActiveList(this.project.addList(this.listInputName.value.trim()));
+            // enable add todo button
+            this.addTodoBtn.disabled = false;
             // switch to list
-            this.renderTodos(this.project.active.name);
+            this.renderTodos(this.activeList)
             // reset dialog
-            this.resetDialog(this.newListDialog);
+            this.resetDialog(this.listDialog);
             // render lists
             this.renderLists();
         });
 
-        // add todo
-        this.newTodoAdd.addEventListener('click', () => {
-            this.newTodoDialog.showModal();
-        });
-
-        // add todo: check for title
-        this.newTodoTitle.addEventListener('input', () => {
-            if (this.newTodoTitle.value.trim() !== '') {
-                this.newTodoSubmit.disabled = false;
-            } else {
-                this.newTodoSubmit.disabled = true;
-            }
-        });
-
-        // add todo: submit
-        this.newTodoSubmit.addEventListener('click', () => {
-            const title = this.newTodoTitle.value;
-            const desc = this.newTodoDesc.value;
-            const date = this.newTodoDate.value;
-            const time = this.newTodoTime.value;
-            const pri = this.newTodoPri.value;
-            this.addTodo(title, desc, date, time, pri);
-            this.resetDialog(this.newTodoDialog);
-            this.renderTodos(this.project.active.name);
-        });
-
         // lists on click
-        this.listUl.addEventListener('click', (e) => {
-            const remove = e.target.closest('.removeList');
-
-            // handle remove list
+        this.listContainer.addEventListener('click', (e) => {
+            // handle remove
+            const remove = e.target.closest('.remove');
             if (remove) {
                 e.stopPropagation();
                 const id = remove.parentElement.dataset.id;
@@ -301,48 +259,74 @@ export class Display {
                 return;
             }
 
-            // handle list click
-            const listDiv = e.target.closest('.listItemDiv');
-            if (listDiv) {
-                const id = listDiv.dataset.id
-                this.setActive(id);
-                this.newTodoAdd.disabled = false;
-                this.renderTodos(this.project.active.name);
-                this.renderLists();
-            } 
-        });
- 
-        // projects on click
-        this.projects.forEach(project => {
-            project.addEventListener('click', () => {
-                const view = project.dataset.view;
-                this.newTodoAdd.disabled = true;
+            // handle edit *** FINISH
+            const edit = e.target.closest('.edit');
+            if (edit) {
+                e.stopPropagation();
+                const id = edit.parentElement.dataset.id;
+                return;
+            }
 
-                switch(view) {
-                    case 'all': this.renderAll(); break;
-                    case 'today': this.renderToday(); break;
-                    case 'past': this.renderPast(); break;
-                    case 'completed': this.renderCompleted(); break;
-                }
-            });
+            // handle list click
+            const listItem = e.target.closest('.list-item-container');
+            if (listItem) {
+                const id = listItem.dataset.id;
+                this.setActiveList(id);
+                this.addTodoBtn.disabled = false;
+                this.renderTodos(this.activeList);
+                this.renderLists();
+            }
         });
+        
+        // add todo
+        this.addTodoBtn.addEventListener('click', () => {
+            this.todoDialog.showModal();
+        });
+
+        // add todo: check for title
+        this.todoInputTitle.addEventListener('input', () => {
+            if (this.todoInputTitle.value.trim() !== '') {
+                this.todoSubmit.disabled = false;
+            } else {
+                this.todoSubmit.disabled = true;
+            }
+        });
+
+        // add todo: submit
+        this.todoSubmit.addEventListener('click', () => {
+            const title = this.todoInputTitle.value;
+            const desc = this.todoInputDesc.value;
+            const date = this.todoInputDate.value;
+            const time = this.todoInputTime.value;
+            const pri = this.todoInputPri.value;
+            this.addTodo(this.activeList, title, desc, date, time, pri);
+            this.resetDialog(this.todoDialog);
+            this.renderTodos(this.activeList);
+        })
 
         // todo on click
-        this.todoDiv.addEventListener('click', (e) => {
-            const remove = e.target.closest('.removeTodo')
-
-            // handle remove todo
+        this.todoContainer.addEventListener('click', (e) => {
+            // handle remove
+            const remove = e.target.closest('.remove');
             if (remove) {
                 e.stopPropagation();
                 const id = remove.parentElement.dataset.id;
                 if (confirm('Remove to-do item?')) {
                     this.removeTodo(id);
-                    this.renderTodos(this.project.active.name);
+                    this.renderTodos(this.activeList);
                 }
                 return;
             }
 
-            // handle checkbox
+            // handle edit *** FINISH
+            const edit = e.target.closest('.edit');
+            if (edit) {
+                e.stopPropagation();
+                console.log('edit');
+                return;
+            }
+
+            //handle checkbox *** FINISH
             const checkbox = e.target.closest('input');
             if (checkbox) {
                 e.stopPropagation();
@@ -355,13 +339,27 @@ export class Display {
                 return;
             }
 
-            // handle todo details
-            const todo = e.target.closest('.item');
+            // handle details *** FINISH
+            const todo = e.target.closest('.todo-item');
             if (todo) {
                 const id = todo.dataset.id;
-                this.expandTodo(id);
+                console.log('expand');
             }
-            
         })
+
+        // views
+        this.viewBtns.forEach(button => {
+            button.addEventListener('click', () => {
+                const view = button.dataset.view;
+                this.addTodoBtn.disabled = true;
+
+                switch(view) {
+                    case 'all': this.renderAll(); break;
+                    case 'today': this.renderToday(); break;
+                    case 'past': this.renderPast(); break;
+                    case 'completed': this.renderCompleted(); break;
+                }
+            });
+        });
     }
 }
