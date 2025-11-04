@@ -35,6 +35,7 @@ export class Display {
         // views
         this.views = document.getElementById('views');
         this.viewBtns = document.querySelectorAll('.view-btn');
+        this.currentView = 'All';
     }
 
     // helpers
@@ -55,7 +56,18 @@ export class Display {
 
     // views
     changeView(view) {
+        this.currentView = view;
         this.header.textContent = view;
+    }
+
+    refreshView() {
+        switch(this.currentView) {
+            case 'All': this.renderAll(); break;
+            case 'Today': this.renderToday(); break;
+            case 'Past': this.renderPast(); break;
+            case 'Completed': this.renderCompleted(); break;
+            default: this.renderTodos(this.activeList);
+        }
     }
 
     renderAll() {
@@ -79,6 +91,7 @@ export class Display {
             }
         })
     }
+
 
     // lists
 
@@ -325,7 +338,7 @@ export class Display {
                 const id = remove.parentElement.dataset.id;
                 if (confirm('Remove to-do item?')) {
                     this.removeTodo(id);
-                    this.renderTodos(this.activeList);
+                    this.refreshView();
                 }
                 return;
             }
