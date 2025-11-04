@@ -81,7 +81,7 @@ export class Display {
     }
 
     // lists
-    
+
     // find list and todo by todo id
     find(id) {
         const list = this.project.lists.find(list => 
@@ -160,7 +160,10 @@ export class Display {
     }
 
     removeTodo(id) {
-        this.activeList.removeTodo(id);
+        const found = this.find(id);
+        if (found) {
+            found.list.removeTodo(id);
+        }
     }
 
     createTodoElement(todo) {
