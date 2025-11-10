@@ -340,8 +340,12 @@ export class Display {
             const time = this.todoInputTime.value;
             const pri = this.todoInputPri.value;
             this.addTodo(this.activeList, title, desc, date, time, pri);
-            this.resetDialog(this.todoDialog);
             this.renderTodos(this.activeList);
+        })
+
+        // add todo: close dialog reset
+        this.todoDialog.addEventListener('close', () => {
+            this.resetDialog(this.todoDialog);
         })
 
         // todo on click
