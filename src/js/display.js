@@ -1,5 +1,5 @@
 import { Projects } from './projects.js';
-import { parseISO, format } from 'date-fns';
+import { parse, isAfter, format } from 'date-fns';
 
 export class Display {
     constructor(project) {
@@ -55,6 +55,15 @@ export class Display {
         });
         submit.disabled = true;
         dialog.close();
+    }
+
+    parse(date, time) {
+        console.log(date, time)
+        if(date && !time) {
+            return parse(date, 'MM-dd-yyyy', new Date());
+        } else if (date && time) {
+            return parse(`${date} ${time}`, 'MM-dd-yyyy HH:mm', new Date());
+        }
     }
 
     // views
@@ -129,8 +138,9 @@ export class Display {
         this.changeView('Past Due');
         this.clear(this.todoContainer);
         const date = new Date();
-
-        console.log(date);
+        
+        console.log(this.parse('11-24-2001', '13:21'))
+        
 
 
     }
@@ -348,7 +358,6 @@ export class Display {
             this.renderTodos(this.activeList)
             // render lists
             this.renderLists();
-            console.log(this.project.lists)
         });
 
         // add list: close reset input
