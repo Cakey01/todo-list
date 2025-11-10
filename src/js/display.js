@@ -126,6 +126,7 @@ export class Display {
             this.renderTodos(this.activeList);
         } else {
             this.renderAll();
+            this.addTodoBtn.disabled = true;
         }
     }
 
