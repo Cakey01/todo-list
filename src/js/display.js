@@ -1,4 +1,5 @@
 import { Projects } from './projects.js';
+import { parseISO, format } from 'date-fns';
 
 export class Display {
     constructor(project) {
@@ -95,10 +96,42 @@ export class Display {
     }
 
     renderToday() {
+        this.changeView('Today');
+        this.clear(this.todoContainer);
 
+        const date = format(new Date(), 'MM-dd-yyyy');
+
+        // find lists with current date todos
+        const lists = this.project.lists.filter(list =>
+            list.todos.some(todo => todo.date === date)
+        )
+
+        if (lists.length !== 0) {
+            lists.forEach(list => {
+                const container = document.createElement('div');
+                container.classList.add('item-container');
+
+                const name = document.createElement('h2');
+                name.textContent = list.name;
+                container.appendChild(name);
+
+                // completed todos
+                const todos = list.todos.filter(todo => todo.date === date);
+
+                todos.forEach(todo => container.appendChild(this.createTodoElement(todo)));
+
+                this.todoContainer.appendChild(container);
+            });
+        }
     }
 
     renderPast() {
+        this.changeView('Past Due');
+        this.clear(this.todoContainer);
+        const date = new Date();
+
+        console.log(date);
+
 
     }
 
