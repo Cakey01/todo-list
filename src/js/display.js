@@ -250,7 +250,14 @@ export class Display {
         // add list: check for input
         this.listInputName.addEventListener('input', () => {
             if (this.listInputName.value.trim() !== '') {
-                this.listSubmit.disabled = false;
+                const names = this.project.lists.map(list => list.name);
+                console.log(names)
+                console.log(this.listInputName.value.trim());
+                if (!names.includes(this.listInputName.value.trim())) {
+                    this.listSubmit.disabled = false;
+                } else {
+                    this.listSubmit.disabled = true;
+                }
             } else {
                 this.listSubmit.disabled = true;
             }
@@ -268,6 +275,7 @@ export class Display {
             this.resetDialog(this.listDialog);
             // render lists
             this.renderLists();
+            console.log(this.project.lists)
         });
 
         // lists on click
