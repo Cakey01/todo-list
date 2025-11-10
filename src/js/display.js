@@ -10,6 +10,8 @@ export class Display {
         this.addListBtn = document.getElementById('addList');
         this.listInputName = document.getElementById('listInputName');
         this.listSubmit = document.getElementById('listSubmit');
+        this.listForm = document.getElementById('listForm');
+        this.listCancel = listForm.querySelector('button[value="cancel"]')
 
         // todo dialog
         this.todoDialog = document.getElementById('todoDialog');
@@ -273,11 +275,14 @@ export class Display {
             this.addTodoBtn.disabled = false;
             // switch to list
             this.renderTodos(this.activeList)
-            // reset dialog
-            this.resetDialog(this.listDialog);
             // render lists
             this.renderLists();
             console.log(this.project.lists)
+        });
+
+        // add list: close reset input
+        this.listDialog.addEventListener('close', () => {
+            this.resetDialog(this.listDialog);
         });
 
         // lists on click
