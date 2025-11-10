@@ -94,6 +94,43 @@ export class Display {
         })
     }
 
+    renderToday() {
+
+    }
+
+    renderPast() {
+
+    }
+
+    renderCompleted() {
+        this.changeView('Completed');
+        this.clear(this.todoContainer);
+
+        // find lists with completed todos
+        const completed = this.project.lists.filter(list => 
+            list.todos.some(todo => todo.completed === true)
+        )
+
+        if (completed.length !== 0) {
+            completed.forEach(list => {
+                const container = document.createElement('div');
+                container.classList.add('item-container');
+
+                const name = document.createElement('h2');
+                name.textContent = list.name;
+                container.appendChild(name);
+
+                // completed todos
+                const todos = list.todos.filter(todo => todo.completed === true);
+
+                todos.forEach(todo => container.appendChild(this.createTodoElement(todo)));
+
+                this.todoContainer.appendChild(container);
+            });
+        }
+
+    }
+
 
     // lists
 
