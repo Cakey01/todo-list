@@ -122,6 +122,8 @@ export class Display {
         if (this.project.lists[0]) {
             this.setActiveList(this.project.lists[0].id);
             this.renderTodos(this.activeList);
+        } else {
+            this.renderAll();
         }
     }
 
