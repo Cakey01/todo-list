@@ -58,7 +58,6 @@ export class Display {
     }
 
     parse(date, time) {
-        console.log(date, time)
         if(date && !time) {
             return parse(date, 'MM-dd-yyyy', new Date());
         } else if (date && time) {
@@ -124,7 +123,6 @@ export class Display {
                 name.textContent = list.name;
                 container.appendChild(name);
 
-                // completed todos
                 const todos = list.todos.filter(todo => todo.date === date);
 
                 todos.forEach(todo => container.appendChild(this.createTodoElement(todo)));
@@ -139,7 +137,29 @@ export class Display {
         this.clear(this.todoContainer);
         const date = new Date();
         
-        console.log(this.parse('11-24-2001', '13:21'))
+        // find lists with todos past due
+        const lists = this.project.lists.filter(list =>
+            list.todos.some(todo => isAfter(date, this.parse(todo.date, todo.time)))
+        )
+
+        if (lists.length !== 0) {
+            lists.forEach(list => {
+                const container = document.createElement('div');
+                container.classList.add('item-container');
+
+                const name = document.createElement('h2');
+                name.textContent = list.name;
+                container.appendChild(name);
+
+                const todos = list.todos.filter(todo => isAfter(date, this.parse(todo.date, todo.time)));
+
+                todos.forEach(todo => container.appendChild(this.createTodoElement(todo)));
+
+                this.todoContainer.appendChild(container);
+            })
+        }
+        console.log(lists)
+        console.log(this.parse('11-24-2001'))
         
 
 
