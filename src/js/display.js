@@ -156,13 +156,8 @@ export class Display {
                 todos.forEach(todo => container.appendChild(this.createTodoElement(todo)));
 
                 this.todoContainer.appendChild(container);
-            })
+            });
         }
-        console.log(lists)
-        console.log(this.parse('11-24-2001'))
-        
-
-
     }
 
     renderCompleted() {
@@ -356,8 +351,7 @@ export class Display {
         this.listInputName.addEventListener('input', () => {
             if (this.listInputName.value.trim() !== '') {
                 const names = this.project.lists.map(list => list.name);
-                console.log(names)
-                console.log(this.listInputName.value.trim());
+                
                 if (!names.includes(this.listInputName.value.trim())) {
                     this.listSubmit.disabled = false;
                 } else {
