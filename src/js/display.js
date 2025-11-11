@@ -245,8 +245,10 @@ export class Display {
         container.append(item, edit, remove);
 
         // background color if active
-        if (this.activeList.id === container.dataset.id) {
+        if (this.activeList && this.activeList.id === container.dataset.id) {
             container.style.backgroundColor = 'aliceblue';
+        } else {
+            container.style.backgroundColor = '';
         }
 
         return container;
@@ -489,6 +491,7 @@ export class Display {
         this.viewBtns.forEach(button => {
             button.addEventListener('click', () => {
                 const view = button.dataset.view;
+                this.activeList = null;
                 this.addTodoBtn.disabled = true;
 
                 switch(view) {
@@ -497,6 +500,7 @@ export class Display {
                     case 'past': this.renderPast(); break;
                     case 'completed': this.renderCompleted(); break;
                 }
+                this.renderLists();
             });
         });
     }
