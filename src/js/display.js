@@ -1,5 +1,5 @@
 import { Projects } from './projects.js';
-import { parse, isAfter, isPast, format } from 'date-fns';
+import { parse, isPast, format } from 'date-fns';
 
 export class Display {
     constructor(project) {
@@ -52,12 +52,15 @@ export class Display {
             if (this.editTodoId) {
                 const todo = this.find(this.editTodoId).todo;
                 console.log(todo);
+                // fill inputs
                 this.todoInputTitle.value = todo.title;
                 this.todoInputDesc.value = todo.description;
-                this.todoInputDate.value = todo.date;
+                this.todoInputDate.value = todo.date ? format(todo.date, 'yyyy-MM-dd', new Date()) : null;
                 this.todoInputTime.value = todo.time;
                 this.todoInputPri.value = todo.priority;
                 this.todoSubmit.disabled = false;
+                dialog.showModal();
+            } else {
                 dialog.showModal();
             }
         }
@@ -354,11 +357,15 @@ export class Display {
         // ...
     }
 
-    editTodo(id) {
+    editTodo(id, title, description, date, time, priority) {
         const list = this.find(id).list;
-        list.updateTodo({
-
-        })
+        list.editTodo(id, {
+            title: title,
+            description: description || null,
+            date: date || null,
+            time: time || null,
+            priority: priority 
+        });
     }
 
     // event listeners
@@ -435,7 +442,7 @@ export class Display {
         
         // add todo
         this.addTodoBtn.addEventListener('click', () => {
-            this.todoDialog.showModal();
+            this.showDialog(this.todoDialog);
         });
 
         // add todo: check for title
@@ -460,13 +467,13 @@ export class Display {
                 this.addTodo(this.activeList, title, desc, date, time, pri);
             } else if (this.editTodoId) {
                 this.editTodo(this.editTodoId, title, desc, date, time, pri);
-                this.editTodoId = null;
             }
             this.renderTodos(this.activeList);
         })
 
         // add todo: close dialog reset
         this.todoDialog.addEventListener('close', () => {
+            this.editTodoId = null;
             this.resetDialog(this.todoDialog);
         })
 
