@@ -12,7 +12,8 @@ export class Display {
         this.listInputName = document.getElementById('listInputName');
         this.listSubmit = document.getElementById('listSubmit');
         this.listForm = document.getElementById('listForm');
-        this.listCancel = listForm.querySelector('button[value="cancel"]')
+        this.listCancel = listForm.querySelector('button[value="cancel"]');
+        this.editListId = null;
 
         // todo dialog
         this.todoDialog = document.getElementById('todoDialog');
@@ -59,6 +60,15 @@ export class Display {
                 this.todoInputTime.value = todo.time;
                 this.todoInputPri.value = todo.priority;
                 this.todoSubmit.disabled = false;
+                dialog.showModal();
+            } else {
+                dialog.showModal();
+            }
+        } else if (dialog === this.listDialog) {
+            if (this.editListId) {
+                const list = this.project.findList(this.editListId);
+                this.listInputName.value = list.name;
+                this.listSubmit.disabled = false;
                 dialog.showModal();
             } else {
                 dialog.showModal();
@@ -282,6 +292,13 @@ export class Display {
         });
     }
 
+    editList(id, name) {
+        const list = this.project.findList(id);
+        if (list) {
+            list.name = name;
+        }
+    }
+
     // todos
     addTodo(list, title, description, date, time, priority) {
         list.addTodo({
@@ -392,8 +409,13 @@ export class Display {
 
         // add list: submit
         this.listSubmit.addEventListener('click', () => {
-            // add list and set as active
-            this.setActiveList(this.project.addList(this.listInputName.value.trim()));
+            // if not editing add list
+            if (!this.editListId) {
+                this.setActiveList(this.project.addList(this.listInputName.value.trim()));
+            } else if (this.editListId) {
+                this.editList(this.editListId, this.listInputName.value);
+                this.setActiveList(this.editListId);
+            } 
             // enable add todo button
             this.addTodoBtn.disabled = false;
             // switch to list
@@ -404,6 +426,7 @@ export class Display {
 
         // add list: close reset input
         this.listDialog.addEventListener('close', () => {
+            this.editListId = null;
             this.resetDialog(this.listDialog);
         });
 
@@ -421,11 +444,13 @@ export class Display {
                 return;
             }
 
-            // handle edit *** FINISH
+            // handle edit
             const edit = e.target.closest('.edit');
             if (edit) {
                 e.stopPropagation();
                 const id = edit.parentElement.dataset.id;
+                this.editListId = id;
+                this.showDialog(this.listDialog);
                 return;
             }
 
@@ -491,7 +516,7 @@ export class Display {
                 return;
             }
 
-            // handle edit *** FINISH
+            // handle edit
             const edit = e.target.closest('.edit');
             if (edit) {
                 e.stopPropagation();
