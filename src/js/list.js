@@ -34,7 +34,7 @@ export class List {
         priority = accepted.includes(priority) ? priority : 'none';
 
 
-        return { title, description, date, time, priority }
+        return { title, description, date, time, priority };
     }
 
     addTodo(values) {
