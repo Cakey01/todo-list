@@ -1,5 +1,5 @@
 import { Projects } from './projects.js';
-import { parse, isAfter, format } from 'date-fns';
+import { parse, isAfter, isPast, format } from 'date-fns';
 
 export class Display {
     constructor(project) {
@@ -23,6 +23,7 @@ export class Display {
         this.todoInputDate = document.getElementById('todoInputDate');
         this.todoInputTime = document.getElementById('todoInputTime');
         this.todoInputPri = document.getElementById('todoInputPri');
+        this.editTodoId = null;
 
         // lists
         this.listContainer = document.getElementById('listContainer');
@@ -46,6 +47,22 @@ export class Display {
         section.innerHTML = '';
     }
 
+    showDialog(dialog) {
+        if (dialog === this.todoDialog) {
+            if (this.editTodoId) {
+                const todo = this.find(this.editTodoId).todo;
+                console.log(todo);
+                this.todoInputTitle.value = todo.title;
+                this.todoInputDesc.value = todo.description;
+                this.todoInputDate.value = todo.date;
+                this.todoInputTime.value = todo.time;
+                this.todoInputPri.value = todo.priority;
+                this.todoSubmit.disabled = false;
+                dialog.showModal();
+            }
+        }
+    }
+
     resetDialog(dialog) {
         const inputs = dialog.querySelectorAll('input');
         const submit = dialog.querySelector('button[value="default"]');
@@ -57,9 +74,22 @@ export class Display {
         dialog.close();
     }
 
+    find(id) {
+        const list = this.project.lists.find(list => 
+            list.todos.some(todo => todo.id === id)
+        );
+
+        if (list) {
+            const todo = list.findTodo(id);
+            return { list, todo };
+        }
+        return null;
+    }
+
     parse(date, time) {
+        console.log(date, time)
         if(date && !time) {
-            return parse(date, 'MM-dd-yyyy', new Date());
+            return parse(`${date} 23:59`, 'MM-dd-yyyy HH:mm', new Date());
         } else if (date && time) {
             return parse(`${date} ${time}`, 'MM-dd-yyyy HH:mm', new Date());
         }
@@ -135,11 +165,10 @@ export class Display {
     renderPast() {
         this.changeView('Past Due');
         this.clear(this.todoContainer);
-        const date = new Date();
         
         // find lists with todos past due
         const lists = this.project.lists.filter(list =>
-            list.todos.some(todo => isAfter(date, this.parse(todo.date, todo.time)))
+            list.todos.some(todo => isPast(this.parse(todo.date, todo.time)))
         )
 
         if (lists.length !== 0) {
@@ -151,7 +180,7 @@ export class Display {
                 name.textContent = list.name;
                 container.appendChild(name);
 
-                const todos = list.todos.filter(todo => isAfter(date, this.parse(todo.date, todo.time)));
+                const todos = list.todos.filter(todo => isPast(this.parse(todo.date, todo.time)));
 
                 todos.forEach(todo => container.appendChild(this.createTodoElement(todo)));
 
@@ -191,19 +220,6 @@ export class Display {
 
 
     // lists
-
-    // find list and todo by todo id
-    find(id) {
-        const list = this.project.lists.find(list => 
-            list.todos.some(todo => todo.id === id)
-        );
-
-        if (list) {
-            const todo = list.findTodo(id);
-            return { list, todo };
-        }
-        return null;
-    }
 
     setActiveList(id) {
         this.activeList = this.project.findList(id);
@@ -339,7 +355,10 @@ export class Display {
     }
 
     editTodo(id) {
-        // ...
+        const list = this.find(id).list;
+        list.updateTodo({
+
+        })
     }
 
     // event listeners
@@ -428,14 +447,21 @@ export class Display {
             }
         });
 
-        // add todo: submit
+        // todo: submit
         this.todoSubmit.addEventListener('click', () => {
             const title = this.todoInputTitle.value;
             const desc = this.todoInputDesc.value;
             const date = this.todoInputDate.value;
             const time = this.todoInputTime.value;
             const pri = this.todoInputPri.value;
-            this.addTodo(this.activeList, title, desc, date, time, pri);
+            console.log(this.editTodoId)
+            // check if editing todo or adding
+            if (!this.editTodoId) {
+                this.addTodo(this.activeList, title, desc, date, time, pri);
+            } else if (this.editTodoId) {
+                this.editTodo(this.editTodoId, title, desc, date, time, pri);
+                this.editTodoId = null;
+            }
             this.renderTodos(this.activeList);
         })
 
@@ -462,7 +488,8 @@ export class Display {
             const edit = e.target.closest('.edit');
             if (edit) {
                 e.stopPropagation();
-                console.log('edit');
+                this.editTodoId = edit.parentElement.dataset.id;
+                this.showDialog(this.todoDialog);
                 return;
             }
 
