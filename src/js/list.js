@@ -8,56 +8,39 @@ export class List {
         this.todos = [];
     }
 
-    addTodo({ title, description, date, time, priority }) {
-        // title required before creating todo
-        if (!title || !title.trim()) {
-            return;
+    checkValues({ title, description, date, time, priority }) {
+        // title
+        title = (title && title.trim().length) ? title.trim() : null;
+
+        // description
+        description = (description && description.trim().length) ? description.trim() : null;
+
+        // date
+        
+        if (date) {
+            let isoDate = parseISO(date);
+            date = isValid(isoDate) ? format(isoDate, 'MM-dd-yyyy') : null;
         }
 
-        // trim title and description
-        title = title.trim();
-        if (description) {
-            description = description.trim();
+        // time
+        if (time) {
+            const isoDate = parseISO(date) || format(new Date(), 'yyyy-MM-dd');
+            const parsed = parseISO(`${isoDate}T${time}`);
+            time = isValid(parsed) ? time : null;
         }
+
+        // priority
+        const accepted = ['none', 'low', 'medium', 'high'];
+        priority = accepted.includes(priority) ? priority : 'none';
+
+
+        return { title, description, date, time, priority }
+    }
+
+    addTodo(values) {
+        const { title, description, date, time, priority } = this.checkValues(values);
 
         const todo = new Todo({ title, description, date, time, priority });
-
-        // date check & time check if date is valid
-        if (date) {
-            const parsedDate = parseISO(todo.date);
-            if (isValid(parsedDate)) {
-                todo.date = format(parsedDate, 'MM-dd-yyyy');
-            } else {
-                todo.date = null;
-            }
-            if (time) {
-                const parsedDateTime = parseISO(`${date}T${time}`);
-                if (isValid(parsedDateTime)) {
-                    todo.time = time;
-                } else {
-                    todo.time = null;
-                }
-            }
-        } else if (!todo.date && time) {
-            date = format(new Date(), 'yyyy-MM-dd');
-            const parsedDateTime = parseISO(`${date}T${time}`);
-            if (isValid(parsedDateTime)) {
-                todo.date = format(new Date(), 'MM-dd-yyyy');
-                todo.time = time;
-            } else {
-            todo.time = null
-            }
-        }
-
-        // priority check
-        if (priority) {
-            const accepted = ['none', 'low', 'medium', 'high'];
-            if (!accepted.includes(priority)) {
-                todo.priority = null;
-            }
-        } else {
-            todo.priority = 'none';
-        }
 
         this.todos.push(todo);
     }
@@ -73,26 +56,15 @@ export class List {
         }
     }
 
-    updateTodo(id, property, value) {
+    editTodo(id, values) {
         const todo = this.findTodo(id);
 
-        if (!todo) return;
+        const { title, description, date, time, priority } = this.checkValues(values);
 
-        if (property === 'title' && value.trim().length) {
-            todo.title = value.trim();
-        } else if (property === 'description') {
-            todo.description = value.trim();
-        } else if (property === 'date' || property === 'time') {
-            todo[property] = value;
-        } else if (property === 'priority') {
-            const accepted = ['low', 'medium', 'high', 'none']
-            if (accepted.includes(value)) {
-                todo.priority = value;
-            }
-        } else if (property === 'completed') {
-            if (value === true) {
-                todo.completed = true;
-            }
-        }
+        todo.title = title;
+        todo.description = description;
+        todo.date = date;
+        todo.time = time;
+        todo.priority = priority;
     }
 }
