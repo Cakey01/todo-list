@@ -16,17 +16,20 @@ export class List {
         description = (description && description.trim().length) ? description.trim() : null;
 
         // date
-        
+        let isoDate = null;
         if (date) {
-            let isoDate = parseISO(date);
+            isoDate = parseISO(date);
             date = isValid(isoDate) ? format(isoDate, 'MM-dd-yyyy') : null;
         }
 
         // time
         if (time) {
-            const isoDate = parseISO(date) || format(new Date(), 'yyyy-MM-dd');
-            const parsed = parseISO(`${isoDate}T${time}`);
+            const dateString = date ? format(isoDate, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd');
+            const parsed = parseISO(`${dateString}T${time}`);
             time = isValid(parsed) ? time : null;
+            if (!date && time) {
+                date = format(new Date(), 'MM-dd-yyyy');
+            }
         }
 
         // priority
