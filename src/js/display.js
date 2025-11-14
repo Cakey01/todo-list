@@ -525,7 +525,7 @@ export class Display {
                 return;
             }
 
-            //handle checkbox *** FINISH
+            //handle checkbox
             const checkbox = e.target.closest('input');
             if (checkbox) {
                 e.stopPropagation();
