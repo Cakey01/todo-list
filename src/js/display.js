@@ -393,7 +393,7 @@ export class Display {
         }
     }
 
-    expandTodo(id, container) {
+    expandTodo(id) {
         // if no active or other todo is active
         if (!this.activeTodo || this.activeTodo.id !== id) {
             this.setActiveTodo(id);
@@ -571,7 +571,7 @@ export class Display {
                 const id = todo.dataset.id;
                 const list = this.find(id).list;
                 this.expandTodo(id, todo);
-                this.renderTodos(list);
+                this.refreshView();
             }
         })
 
