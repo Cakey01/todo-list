@@ -33,6 +33,7 @@ export class Display {
         // todos
         this.todoContainer = document.getElementById('todoContainer');
         this.todoItem = document.querySelectorAll('.todo-item');
+        this.activeTodo = null;
 
         // header
         this.header = document.getElementById('currentView')
@@ -275,9 +276,7 @@ export class Display {
 
         // background color if active
         if (this.activeList && this.activeList.id === container.dataset.id) {
-            container.style.backgroundColor = 'aliceblue';
-        } else {
-            container.style.backgroundColor = '';
+            container.classList.add('active-list');
         }
 
         return container;
@@ -300,6 +299,10 @@ export class Display {
     }
 
     // todos
+    setActiveTodo(id) {
+        this.activeTodo = this.find(id).todo;
+    }
+
     addTodo(list, title, description, date, time, priority) {
         list.addTodo({
             title: title,
@@ -343,10 +346,29 @@ export class Display {
 
         content.appendChild(title);
 
+        if (todo.description) {
+            const desc = document.createElement('p');
+            desc.classList.add('todo-description');
+            desc.classList.toggle('hidden');
+            desc.textContent = todo.desc;
+            content.appendChild(desc);
+        }
+
         if (todo.date) {
             const date = document.createElement('h6');
+            date.classList.add('todo-date');
             date.textContent = todo.date;
             content.appendChild(date);
+        }
+
+        if (todo.time) {
+            const time = document.createElement('h6');
+            time.classList.add('todo-time');
+            time.classList.toggle('hidden');
+            const parsed = this.parse(todo.date, todo.time);
+            const formatted = format(parsed, 'hh:mmaaa');
+            time.textContent = `, ${formatted}`;
+            content.appendChild(time);
         }
 
         container.append(check, content, edit, remove);
@@ -370,8 +392,10 @@ export class Display {
         }
     }
 
-    expandTodo(id) {
-        // ...
+    expandTodo(id, container) {
+        if (!container.classList.contains('expanded')) {
+
+        }
     }
 
     editTodo(id, title, description, date, time, priority) {
@@ -542,6 +566,10 @@ export class Display {
             const todo = e.target.closest('.todo-item');
             if (todo) {
                 const id = todo.dataset.id;
+                const container = todo.querySelector('.todo-content');
+                this.expandTodo(id, container);
+
+                console.log(id, container)
                 console.log('expand');
             }
         })
