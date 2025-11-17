@@ -485,6 +485,7 @@ export class Display {
             // handle list click
             const listItem = e.target.closest('.list-item-container');
             if (listItem) {
+                this.activeTodo = null;
                 const id = listItem.dataset.id;
                 this.setActiveList(id);
                 this.addTodoBtn.disabled = false;
@@ -572,12 +573,16 @@ export class Display {
                 const list = this.find(id).list;
                 this.expandTodo(id, todo);
                 this.refreshView();
+            } else {
+                this.activeTodo = null;
+                this.refreshView();
             }
         })
 
         // views
         this.viewBtns.forEach(button => {
             button.addEventListener('click', () => {
+                this.activeTodo = null;
                 const view = button.dataset.view;
                 this.activeList = null;
                 this.addTodoBtn.disabled = true;
