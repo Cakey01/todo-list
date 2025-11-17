@@ -325,6 +325,10 @@ export class Display {
         container.classList.add('todo-item');
         container.dataset.id = todo.id;
 
+        if (this.activeTodo && this.activeTodo.id === todo.id) {
+            container.classList.add('active-todo');
+        }
+
         const check = document.createElement('input');
         check.type = 'checkbox';
         check.checked = todo.completed;
@@ -347,28 +351,25 @@ export class Display {
         content.appendChild(title);
 
         if (todo.description) {
-            const desc = document.createElement('p');
+            const desc = document.createElement('h6');
             desc.classList.add('todo-description');
-            desc.classList.toggle('hidden');
-            desc.textContent = todo.desc;
+            desc.textContent = todo.description;
+            if (!this.activeTodo || this.activeTodo.id !== todo.id) {
+                desc.classList.add('hidden');
+            }
             content.appendChild(desc);
         }
 
         if (todo.date) {
-            const date = document.createElement('h6');
-            date.classList.add('todo-date');
-            date.textContent = todo.date;
-            content.appendChild(date);
-        }
-
-        if (todo.time) {
-            const time = document.createElement('h6');
-            time.classList.add('todo-time');
-            time.classList.toggle('hidden');
-            const parsed = this.parse(todo.date, todo.time);
-            const formatted = format(parsed, 'hh:mmaaa');
-            time.textContent = `, ${formatted}`;
-            content.appendChild(time);
+            const datetime = document.createElement('h5');
+            datetime.classList.add('todo-datetime');
+            datetime.textContent = todo.date;
+            if (todo.time && (this.activeTodo && this.activeTodo.id === todo.id)) {
+                const parsed = this.parse(todo.date, todo.time);
+                const formatted = format(parsed, 'hh:mmaaa');
+                datetime.textContent += `, ${formatted}`;
+            }
+            content.appendChild(datetime);
         }
 
         container.append(check, content, edit, remove);
@@ -393,8 +394,11 @@ export class Display {
     }
 
     expandTodo(id, container) {
-        if (!container.classList.contains('expanded')) {
-
+        // if no active or other todo is active
+        if (!this.activeTodo || this.activeTodo.id !== id) {
+            this.setActiveTodo(id);
+        } else if (this.activeTodo.id === id) {
+            this.activeTodo = null;
         }
     }
 
@@ -510,7 +514,6 @@ export class Display {
             const date = this.todoInputDate.value;
             const time = this.todoInputTime.value;
             const pri = this.todoInputPri.value;
-            console.log(this.editTodoId)
             // check if editing todo or adding
             if (!this.editTodoId) {
                 this.addTodo(this.activeList, title, desc, date, time, pri);
@@ -562,15 +565,13 @@ export class Display {
                 return;
             }
 
-            // handle details *** FINISH
+            // handle details
             const todo = e.target.closest('.todo-item');
             if (todo) {
                 const id = todo.dataset.id;
-                const container = todo.querySelector('.todo-content');
-                this.expandTodo(id, container);
-
-                console.log(id, container)
-                console.log('expand');
+                const list = this.find(id).list;
+                this.expandTodo(id, todo);
+                this.renderTodos(list);
             }
         })
 
