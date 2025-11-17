@@ -1,8 +1,9 @@
 import { List } from './list.js';
+import { Storage } from './storage.js';
 
 export class Projects {
     constructor() {
-        this.lists = [];
+        this.lists = Storage.get('lists');
     }
 
     addList(name) {
@@ -19,6 +20,7 @@ export class Projects {
         // create list and push
         const list = new List(name.trim());
         this.lists.push(list);
+        Storage.save('lists', this.lists);
 
         return list.id;
     }
@@ -28,6 +30,7 @@ export class Projects {
         if (index !== -1) {
             this.lists.splice(index, 1);
         }
+        Storage.save('lists', this.lists);
     }
 
     findList(id) {
