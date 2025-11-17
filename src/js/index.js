@@ -7,6 +7,6 @@ import '../styles/styles.css'
 const project = new Projects();
 const display = new Display(project);
 
+display.init();
 display.eventListeners();
-display.refreshView();
 

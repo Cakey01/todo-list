@@ -44,6 +44,15 @@ export class Display {
         this.currentView = 'All';
     }
 
+    //init
+    init() {
+        this.activeList = null;
+        this.activeTodo = null;
+        this.addTodoBtn.disabled = true;
+        this.renderAll();
+        this.renderLists();
+    }
+
     // helpers
     clear(section) {
         section.innerHTML = '';
@@ -522,13 +531,13 @@ export class Display {
                 this.editTodo(this.editTodoId, title, desc, date, time, pri);
             }
             this.renderTodos(this.activeList);
-        })
+        });
 
         // add todo: close dialog reset
         this.todoDialog.addEventListener('close', () => {
             this.editTodoId = null;
             this.resetDialog(this.todoDialog);
-        })
+        });
 
         // todo on click
         this.todoContainer.addEventListener('click', (e) => {
@@ -577,7 +586,7 @@ export class Display {
                 this.activeTodo = null;
                 this.refreshView();
             }
-        })
+        });
 
         // views
         this.viewBtns.forEach(button => {
