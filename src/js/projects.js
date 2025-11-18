@@ -1,9 +1,38 @@
 import { List } from './list.js';
+import { Todo } from './todo.js';
 import { Storage } from './storage.js';
 
 export class Projects {
     constructor() {
-        this.lists = Storage.get('lists');
+        // stored lists
+        const storageLists = Storage.get('lists');
+        
+        // map to this.lists
+        if (storageLists.length > 0) {
+            this.lists = storageLists.map(listItem => {
+                // create list
+                const list = new List(listItem.name);
+                list.id = listItem.id;
+
+                // make todos Todo instances
+                list.todos = listItem.todos.map(todoItem => {
+                    const todo = new Todo({
+                        title: todoItem.title,
+                        description: todoItem.description,
+                        date: todoItem.date,
+                        time: todoItem.time,
+                        priority: todoItem.priority
+                    });
+                    // add id and completed
+                    todo.id = todoItem.id;
+                    todo.completed = todoItem.completed;
+                    return todo;
+                });
+                return list;
+            });
+        } else {
+            this.lists = [];
+        }
     }
 
     addList(name) {
@@ -20,7 +49,8 @@ export class Projects {
         // create list and push
         const list = new List(name.trim());
         this.lists.push(list);
-        Storage.save('lists', this.lists);
+
+        Storage.save('lists', list)
 
         return list.id;
     }
@@ -30,7 +60,6 @@ export class Projects {
         if (index !== -1) {
             this.lists.splice(index, 1);
         }
-        Storage.save('lists', this.lists);
     }
 
     findList(id) {
