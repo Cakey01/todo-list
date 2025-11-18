@@ -24,7 +24,6 @@ export class Display {
         this.todoInputDate = document.getElementById('todoInputDate');
         this.todoInputTime = document.getElementById('todoInputTime');
         this.todoInputPri = document.getElementById('todoInputPri');
-        this.priSelects = todoInputPri.querySelectorAll('select');
         this.editTodoId = null;
 
         // lists
