@@ -24,6 +24,7 @@ export class Display {
         this.todoInputDate = document.getElementById('todoInputDate');
         this.todoInputTime = document.getElementById('todoInputTime');
         this.todoInputPri = document.getElementById('todoInputPri');
+        this.priSelects = todoInputPri.querySelectorAll('select');
         this.editTodoId = null;
 
         // lists
@@ -67,6 +68,7 @@ export class Display {
                 this.todoInputDesc.value = todo.description;
                 this.todoInputDate.value = todo.date ? format(todo.date, 'yyyy-MM-dd', new Date()) : null;
                 this.todoInputTime.value = todo.time;
+                
                 this.todoInputPri.value = todo.priority;
                 this.todoSubmit.disabled = false;
                 dialog.showModal();
@@ -87,11 +89,14 @@ export class Display {
 
     resetDialog(dialog) {
         const inputs = dialog.querySelectorAll('input');
+        const select = dialog.querySelector('select');
         const submit = dialog.querySelector('button[value="default"]');
 
         inputs.forEach(input => {
             input.value = '';
         });
+        select.value = 'none';
+
         submit.disabled = true;
         dialog.close();
     }
