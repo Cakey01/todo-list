@@ -50,7 +50,7 @@ export class Projects {
         const list = new List(name.trim());
         this.lists.push(list);
 
-        Storage.save('lists', list)
+        this.saveToStorage();
 
         return list.id;
     }
@@ -60,9 +60,15 @@ export class Projects {
         if (index !== -1) {
             this.lists.splice(index, 1);
         }
+
+        this.saveToStorage();
     }
 
     findList(id) {
         return this.lists.find(list => list.id === id);
+    }
+
+    saveToStorage() {
+        Storage.save('lists', this.lists);
     }
 }

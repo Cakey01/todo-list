@@ -62,7 +62,6 @@ export class Display {
         if (dialog === this.todoDialog) {
             if (this.editTodoId) {
                 const todo = this.find(this.editTodoId).todo;
-                console.log(todo);
                 // fill inputs
                 this.todoInputTitle.value = todo.title;
                 this.todoInputDesc.value = todo.description;
@@ -110,7 +109,6 @@ export class Display {
     }
 
     parse(date, time) {
-        console.log(date, time)
         if(date && !time) {
             return parse(`${date} 23:59`, 'MM-dd-yyyy HH:mm', new Date());
         } else if (date && time) {
@@ -305,6 +303,8 @@ export class Display {
         if (list) {
             list.name = name;
         }
+        // save to storage
+        this.project.saveToStorage();
     }
 
     // todos
@@ -320,6 +320,8 @@ export class Display {
             time: time || null,
             priority: priority
         });
+        // save to storage
+        this.project.saveToStorage();
     }
 
     removeTodo(id) {
@@ -327,6 +329,8 @@ export class Display {
         if (found) {
             found.list.removeTodo(id);
         }
+        // save to storage
+        this.project.saveToStorage();
     }
 
     createTodoElement(todo) {
@@ -400,6 +404,8 @@ export class Display {
         if (found) {
             found.todo.completed = completion;
         }
+        // save to storage
+        this.project.saveToStorage();
     }
 
     expandTodo(id) {
@@ -420,6 +426,8 @@ export class Display {
             time: time || null,
             priority: priority 
         });
+        // save to storage
+        this.project.saveToStorage();
     }
 
     // event listeners
@@ -530,7 +538,7 @@ export class Display {
             } else if (this.editTodoId) {
                 this.editTodo(this.editTodoId, title, desc, date, time, pri);
             }
-            this.renderTodos(this.activeList);
+            this.refreshView();
         });
 
         // add todo: close dialog reset
@@ -579,7 +587,6 @@ export class Display {
             const todo = e.target.closest('.todo-item');
             if (todo) {
                 const id = todo.dataset.id;
-                const list = this.find(id).list;
                 this.expandTodo(id, todo);
                 this.refreshView();
             } else {
