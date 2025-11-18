@@ -553,6 +553,7 @@ export class Display {
             // check if editing todo or adding
             if (!this.editTodoId) {
                 this.addTodo(this.activeList, title, desc, date, time, pri);
+                this.activeTodo = null;
             } else if (this.editTodoId) {
                 this.editTodo(this.editTodoId, title, desc, date, time, pri);
             }
