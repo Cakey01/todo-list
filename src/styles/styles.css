@@ -11,6 +11,7 @@
 body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 input, button, textarea, select {
@@ -114,12 +115,20 @@ header > .divider {
 
 
 /* active */
-.active-list {
+.active-list, 
+.active-todo,
+.list-item-container:hover {
     background-color: aliceblue;
+    border: 1px solid grey;
 }
 
-.active-todo {
-    border: 1px solid lightgrey;
+/* buttons */
+button {
+    background-color: aliceblue;
+    border-radius: 5px;
+    border: 1px solid grey;
+    font-weight: 500;
+    color: black
 }
 
 /* sidebar */
@@ -167,6 +176,7 @@ header > .divider {
 #lists > h4 {
     align-self: center;
     justify-self: start;
+    font-size: 18px;
 }
 
 #listContainer {
@@ -190,12 +200,7 @@ header > .divider {
     padding: 5px;
     width: 100%;
     height: 25px;
-    border: none;
     border-radius: 5px;
-}
-
-.list-item-container:hover {
-    background-color: aliceblue;
 }
 
 /* todo */
