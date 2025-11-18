@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+<script defer src="main.js"></script></head>
+<body>
+
+    <header>
+        <div id="headerContainer">
+            <h1 id="currentView"></h1>
+            <button id="addTodo" disabled>+</button>
+        </div>
+        <div class="divider"></div>
+    </header>
+
+    <aside id="sidebar">
+        <nav id="views">
+            <button class="view-btn" data-view="all">
+                <span class="view-label">All</span>
+                <span class="view-count"></span>
+            </button>
+            <button class="view-btn" data-view="today">
+                <span class="view-label">Today</span>
+                <span class="view-count"></span>
+            </button>
+            <button class="view-btn" data-view="past">
+                <span class="view-label">Past Due</span>
+                <span class="view-count"></span>
+            </button>
+            <button class="view-btn" data-view="completed">
+                <span class="view-label">Completed</span>
+                <span class="view-count"></span>
+            </button>
+        </nav>
+
+        <div class="divider"></div>
+
+        <div id="lists">
+            <h4>My Lists</h4>
+            <button id="addList">+</button>
+            <ul id="listContainer">
+            </ul>
+        </div>
+    </aside>
+
+    <main id="todoContainer">
+    </main>
+
+    <dialog id="listDialog">
+        <form id="listForm" method="dialog">
+            <label for="listInputName">Name: </label>
+            <input type="text" id="listInputName">
+            <button id="listSubmit" value="default" disabled>Submit</button>
+            <button value="cancel" formmethod="dialog">Cancel</buton>
+        </form>
+    </dialog>
+    <dialog id="todoDialog">
+        <form id="todoForm" method="dialog">
+            <div class="todo-input">
+                <label for="todoInputTitle">Title: </label>
+                <input type="text" id="todoInputTitle">
+            </div>
+            <div class="todo-input">
+                <label for="todoInputDesc">Description: </label>
+                <input type="text" id="todoInputDesc">
+            </div>
+            <div class="todo-input">
+                <label for="todoInputDate">Date: </label>
+                <input type="date" id="todoInputDate">
+            </div>
+            <div class="todo-input">
+                <label for="todoInputTime">Time: </label>
+                <input type="time" id="todoInputTime">
+            </div>
+            <div class="todo-input">
+                <label for="todoInputPri">Priority: </label>
+                <select name="priority" id="todoInputPri">
+                    <option value="none" selected>None</option>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+            <div class="todo-input">
+                <button id="todoSubmit" value="default" disabled>Submit</button>
+                <button value="cancel" formmethod="dialog">Cancel</buton>
+            </div>
+        </form>
+    </dialog>
+</body>
+</html>
