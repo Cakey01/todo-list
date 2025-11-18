@@ -385,7 +385,18 @@ export class Display {
             content.appendChild(datetime);
         }
 
-        container.append(check, content, edit, remove);
+        const priority = document.createElement('h3');
+        priority.classList.add('todo-priority');
+
+        if (todo.priority !== 'none') {
+            switch (todo.priority) {
+                case 'low': priority.textContent = '!'; break;
+                case 'medium': priority.textContent = '!!'; break;
+                case 'high': priority.textContent = '!!!'; break;
+            }
+        }
+
+        container.append(check, priority, content, edit, remove);
 
         return container;
     }
