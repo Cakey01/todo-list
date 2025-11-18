@@ -308,9 +308,14 @@ dialog {
 }
 
 #listForm > input,
-.todoInput > input {
-    height: 24px;
+.todo-input > input,
+.todo-input > select {
+    height: 28px;
     margin-right: 10px;
+    background-color: aliceblue;
+    border: 1px solid grey;
+    border-radius: 5px;
+    color: black;
 }
 
 ::backdrop {
@@ -321,7 +326,7 @@ dialog {
 #todoForm {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 10px;
 }
 
 #todoForm > :last-child {
