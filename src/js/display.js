@@ -345,6 +345,7 @@ export class Display {
         const check = document.createElement('input');
         check.type = 'checkbox';
         check.checked = todo.completed;
+        container.appendChild(check);
 
         const content = document.createElement('div');
         content.classList.add('todo-content');
@@ -385,18 +386,20 @@ export class Display {
             content.appendChild(datetime);
         }
 
-        const priority = document.createElement('h3');
-        priority.classList.add('todo-priority');
+        container.appendChild(content)
 
         if (todo.priority !== 'none') {
+            const priority = document.createElement('h3');
+            priority.classList.add('todo-priority');
             switch (todo.priority) {
                 case 'low': priority.textContent = '!'; break;
                 case 'medium': priority.textContent = '!!'; break;
                 case 'high': priority.textContent = '!!!'; break;
             }
+            container.appendChild(priority);
         }
 
-        container.append(check, priority, content, edit, remove);
+        container.append(content, edit, remove);
 
         return container;
     }
